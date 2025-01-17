@@ -1,0 +1,248 @@
+---
+title: 'Guidelines of Drafting ML Data Analysis Reports'
+author: "Cheng Peng"
+date: " "
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = FALSE,   # include code chunk in the output file
+                      warning = FALSE,# sometimes, you code may produce warning messages,
+                                      # you can choose to include the warning messages in
+                                      # the output file. 
+                      results = TRUE, # you can also decide whether to include the output
+                                      # in the output file.
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+When drafting a machine learning data analysis project report, it’s essential to present a clear and structured narrative of your analysis process, methodology, findings, and conclusions. The report should be technically rigorous while also being understandable to a broader audience. Below are detailed guidelines to help structure your machine learning data analysis project report:
+
+
+## 1. Title Information
+
+* **Title**: A concise and descriptive title that clearly reflects the focus of the analysis.
+* **Author(s)**: Names of the team members or the author.
+* **Date**: The submission or completion date of the project.
+* **Affiliation**: The organization, university, or department.
+
+## 2. Abstract
+
+* **Summary**: A brief summary (200–300 words) covering:
+  + The problem being solved.
+  + The data used.
+  + Key analysis methods (e.g., algorithms or statistical methods).
+  + Major findings or results.
+  + Conclusions or implications of the findings.
+
+## 3. Introduction 
+
+* **Problem Definition**: Clearly define the problem or business question you are addressing with the data analysis.
+* **Objective**: Explain the goals of your project, including what you intend to discover or predict.
+* **Importance**: Justify the significance of the analysis, including its potential impact.
+* **Scope and Limitations**: Discuss any constraints, data limitations, or assumptions in your analysis.
+
+
+## 4. Data Overview 
+
+* **Dataset Description**: Provide details about the dataset(s) used:
+* **Source**: Where and how the data was obtained (e.g., public datasets, company data).
+* **Size**: The number of observations (rows) and features (columns).
+* **Types of Data**: Describe the variables (numerical, categorical, time-series, etc.).
+* **Data Cleaning**: Discuss any data cleaning or preprocessing steps taken, such as:
+  + Handling missing values (e.g., imputation, removal).
+  + Dealing with outliers or anomalies.
+  + Normalization or scaling.
+  + Encoding categorical variables (if applicable).
+
+
+## 5. Exploratory Data Analysis (EDA)
+
+* **Descriptive Statistics**: Summarize key metrics (mean, median, standard deviation) for numerical variables.
+* **Data Visualization**: Present visualizations that help explore the data, such as:
+  + Histograms for distributions.
+  + Boxplots for outlier detection.
+  + Pair plots or correlation matrices for understanding relationships between variables.
+  + Scatter plots or heatmaps to visualize data trends.
+* **Insights from EDA**: Discuss patterns, trends, and any insights or issues observed during the EDA.
+* **EDA Informed Data Processing**: Handle missing values, discretizing numerical variable, sparse categorical feature variables, etc .
+
+
+## 6. Methodology 
+
+* **Problem Framing**: Explain how the problem is formulated in terms of machine learning (e.g., classification, regression, clustering).
+* **Model Selection**: Describe the machine learning models you chose (e.g., linear regression, decision trees, k-nearest neighbors, etc.), and why they are suitable for the task.
+* **Feature Engineering**: Discuss any new features you created based on models and algorithms, feature transformations, or selection methods.
+* **Data Split**: Explain how you split the data into training and testing sets (e.g., 80/20 split, cross-validation).
+* **Evaluation Metrics**: Define the metrics you will use to evaluate the models (e.g., accuracy, precision, recall, F1 score, RMSE, etc.).
+
+
+## 7. Implementation
+
+* **Tools and Libraries**: List the programming languages and tools used, for example
+  + Python and Jupyter notebooks and the libraries such as scikit-learn, pandas, matplotlib, seaborn, etc.
+  + R and RMarkdown and libraries such as tidyverse, ggplot2, various interactive graphical libraries, etc. 
+  
+* **Model Building**: Describe the implementation steps taken for training the models, including:
+  + Hyperparameter tuning (e.g., grid search, random search).
+  + Any techniques used to optimize performance (e.g., regularization, ensemble methods).
+* **Model Validation**: Discuss how you validated the model performance (e.g., using cross-validation, validation sets).
+
+
+## 8. Results
+
+* **Model Performance**: Present the evaluation results for each model, including:
+  + Key metrics (e.g., MSE,  accuracy, precision, recall, AUC, etc. for predictive modeling and classification).
+  + Any confusion matrices or other visualizations to highlight model performance.
+* **Comparison of Models**: Compare the performance of different models or algorithms, discussing why certain models performed better than others.
+* **Visuals**: Include flat tables and plots such as:
+  + ROC curves (for classification tasks).
+  + Residual plots or prediction vs. actual plots (for regression tasks).
+  + Learning curves to visualize overfitting/underfitting.
+
+## 9. Discussion 
+
+* **Interpretation of Results of the final optimal models/algorithms**: Provide insights into what the results mean. Discuss:
+  + How well the models performed.
+  + Key patterns or relationships identified.
+  + Any surprising results.
+* **Challenges**: Discuss any difficulties faced during the analysis, such as data issues, model convergence, overfitting, or underfitting.
+* **Limitations**: Address the limitations of your analysis and models (e.g., the dataset size, bias, missing data).
+* **Business Implications**: If applicable, explain how the findings can be applied in a real-world context.
+
+
+## 10. Conclusion
+
+* **Summary of Findings**: Summarize the key takeaways from your analysis and modeling.
+* **Conclusions**: Provide conclusions based on your findings, answering the initial problem statement.
+* **Recommendations**: Suggest any next steps or recommendations for further research, model improvements, or practical applications.
+
+
+## 11. References
+
+* **Citations**: List all the references, such as datasets, academic papers, tutorials, and any libraries used. Use a consistent citation style.
+
+## 12. Appendices (if necessary)
+
+* **Code Snippets**: Provide key sections of the code used in your analysis (e.g., data pre-processing, model building, hyperparameter tuning).
+* **Additional Tables or Figures**: Include supplementary tables, graphs, or charts that may be too detailed for the main body.
+* **Raw Data**: If necessary, include data tables, summaries of preprocessing steps, or results from exploratory analysis that might be useful for further reference.
+
+
+## Best Practices
+
+* **Opening Paragraphs**: Every section, subsection, subsubsection should include an opening paragraph to outline the analytic tasks to perform in the section, subsection or subsubsection before actual data analysis. 
+* **Code Folding**: code should be excluded from the main body of the report for clarity and focus. 
+  + In the HTML report, you can use `code_folding` option in the YAML of **Jupyter Notebook** and **RMarkdown** or `code_fold` in the YAML of **Quarto** to hide/show the code in the report.
+  + In the PDF report, you can use the `setup` code chunk option in **RMarkdown** or **Quarto** to exclude the code from the report and include all code in an appendix. You can also use `nbconvert mynotebook.ipynb --to pdf --no-input` in Jupyter Notebook to  
+* **Clarity and Transparency**: Be transparent about your methodology and assumptions. Provide enough detail for others to replicate your analysis.
+* **Data Visualization**: Use graphs and charts effectively to make complex data easier to understand and interpret.
+* **Consistent Terminology**: Use consistent terminology when referring to models, metrics, and results to avoid confusion.
+* **Be Concise**: Aim for clear and concise writing, especially when discussing technical aspects of the analysis.
+* **Proofreading**: Ensure there are no grammatical or technical errors, and that the flow of the report is logical and easy to follow.
