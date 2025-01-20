@@ -1,0 +1,222 @@
+---
+title: 'Guidelines for Assignment #1'
+author: " "
+date: "STA 522: Applied Statistical Machine Learning"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 18px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 16px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 12px;
+    font-family: "Gill Sans", sans-serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   # include code chunk in the output file
+                      warning = FALSE,# sometimes, you code may produce warning messages,
+                                      # you can choose to include the warning messages in
+                                      # the output file. 
+                      results = TRUE, # you can also decide whether to include the output
+                                      # in the output file.
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+This is the first part of the first project on data preparation for machine learning. The assignment focuses on visual exploratory data analysis and must be submitted to D2L before the deadline. 
+
+**Some general requirements**
+
+* Provide a clear and descriptive title for your work. Generic titles like *Assignment 1, Project 1*, or *STA552 Homework 1* are not acceptable.
+
+* Ensure the inclusion of essential graphical elements, such as axis labels, a meaningful title, numbered captions, legends, and relevant annotations.
+
+* Both base R plots and ggplot plots are acceptable. However, the use of interactive plots is strongly encouraged.
+
+* For 3D plots, utilize interactive graphical libraries or functions, such as `plot_ly` or `ggplotly()`.
+
+* Adhere to the principles of graphical design to ensure clarity, readability, and effective communication of information.
+
+\
+
+
+## 1. Working Data Set 
+
+This data set will be used for project #1 on data preparation. The following are basic requirements
+
+* **Data Size and Feature variables**
+  + Data size must be at least 1000.
+  + Number of feature variables must be bigger than 10 (among them, at least 3 categorical and 3 numerical features)
+  
+* **Missing values**
+  + Consider choosing a data set with some missing values in both categorical and numberical feature variables 
+  + <font color = "blue">*\color{red} If you choose a data set with no missing values, but you are particularly interested in working with that data set*</font>, you can created some missing values for some categorical and numerical features. See the following code showing how to randomly replace values in individual feature variables with missing values.
+  
+```{r}
+# create a data frame
+WorkingData <- data.frame(letter = letters, 
+                          gpa = rnorm(100, mean=2.5, sd = 0.5)[1:26])
+# create random observation ID and replace the corresponding obs with missing
+ltr.missing.id <- sample(1:26, 6, replace = FALSE)
+gpa.missing.id <- sample(1:26, 8, replace = FALSE) 
+WorkingData$letter[ltr.missing.id] <- NA
+WorkingData$gpa[gpa.missing.id] <- NA
+print(WorkingData)
+```
+  
+* **Where to find data**: There several sites you can explore to find your data set.
+  + My teaching data repository (see the link in the top navigation panel of the course web page)
+  + UCI machine learning data repository
+  + Kaggle site
+  + any other sites you can find.
+
+## 2. Introduction
+
+* **Description of Data**
+  + *Purpose of Data Collection* - Provide a clear and concise explanation of why the data is being collected, highlighting the specific objectives and intended use of the data.
+  + *Description of the Data Collection or Generation Process* - Outline the methods used to collect or generate the data, including any tools, technologies, or protocols followed. Specify the time frame and location, if applicable.
+  + *Sample Size and Number of Feature Variables* - State the total sample size and the number of feature variables included in the dataset, providing context for the scope and representativeness of the data.
+  + *Itemized List of Feature Variables* - Present a detailed list of feature variables, including:
+    - Definition/Description: Provide a brief explanation of what each variable represents.
+    - Data Types: Specify the type of data (e.g., categorical, numerical, boolean, text).
+
+* **Purposes of Using This Data Set**
+  + Outline the analytical tasks for this project
+  + *Problem Statements* – Ensure problem statements are specific, accurate, explicit, and concise.
+
+## 3. Distribution of Individual Features
+
+* **Opening paragraph** - outlines the analytic tasks required to prepare and analyze the data effectively. Each task will be detailed in individual subsections, providing clear guidance on the specific actions needed to address data preparation, exploration, and visualization requirements. The goal is to ensure the data is well-suited for subsequent modeling and analysis.
+* **Individual analytic tasks** - describe each individual analytic task in detail. Each subsection begins with a brief introductory paragraph and highlights key features requiring additional analytic actions, such as imputation or feature engineering.
+  + open a subsection with a short opening paragraph to provide an overview of the task and summarize relevant features that demand additional pre-processing steps. These may include handling missing values, addressing outliers, or engineering features to enhance model performance.,
+  + summarize only those features that require additional analytic actions such as imputation and feature engineering in subsequent sections. 
+  + all visual representations will include the following components:
+    - *Observations*: A description of key patterns, trends, or anomalies observed in the data.
+    - *Implications*: The practical and analytical significance of the observations, highlighting how they might influence the data's usability or the modeling approach.
+    - *Analytical Actions*: Specific steps to address insights drawn from the visualization, such as performing transformations and other feature engineering procedures in ML data preparation workflows.
+
+
+## 4. Relationship between Features
+
+* **Opening Paragraph of the section** - outlines the analytic tasks in this section. 
+* **visualize relationship between two feature variables** - The goal is to select appropriate visual representations and ensure all necessary components are included in each visualization. Specifically, the tasks involve the relationship between:
+  + Two numerical feature variables
+  + Two categorical feature variables
+  + One numerical and one categorical feature variables
+* **Three or More Feature Variables** <font color = "red">(optional)</font> - Representing high-dimensional data using marks, channels, or other model-based methods.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
