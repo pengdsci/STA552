@@ -3,6 +3,18 @@ title: 'Data Analysis, Reporting, and Presentation Workflow'
 author: "Cheng Peng"
 date: "West Chester University "
 output:
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
   html_document: 
     toc: yes
     toc_depth: 4
@@ -13,18 +25,6 @@ output:
     code_download: yes
     smooth_scroll: yes
     theme: lumen
-  word_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    keep_md: yes
-  pdf_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    number_sections: yes
-    fig_width: 3
-    fig_height: 3
 editor_options: 
   chunk_output_type: inline
 ---
@@ -58,14 +58,14 @@ h4.date { /* Header 4 - font specifications for the date  */
 }
 h1 { /* Header 1 - font specifications for level 1 section title  */
     font-size: 20px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Gill Sans", sans-serif;
     color: navy;
     text-align: center;
     font-weight: bold;
 }
 h2 { /* Header 2 - font specifications for level 2 section title */
     font-size: 18px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Gill Sans", sans-serif;
     color: navy;
     text-align: left;
     font-weight: bold;
@@ -73,16 +73,18 @@ h2 { /* Header 2 - font specifications for level 2 section title */
 
 h3 { /* Header 3 - font specifications of level 3 section title  */
     font-size: 16px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Gill Sans", sans-serif;
     color: navy;
     text-align: left;
+    font-weight: bold;
 }
 
 h4 { /* Header 4 - font specifications of level 4 section title  */
     font-size: 14px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Gill Sans", sans-serif;
     color: darkred;
     text-align: left;
+    font-weight: bold;
 }
 
 body { background-color:white; }
@@ -231,7 +233,7 @@ Data collection is the first and most critical step in the machine learning pipe
 * **Data Integration**: In many cases, data may come from multiple sources, each with its own structure and format. Integrating disparate datasets while ensuring consistency and integrity is a vital part of the collection phase.
 
 
-## Data Preparation
+### Data Preparation
 
 Once data has been collected, the next critical step is preparing it for analysis. Data preparation encompasses several processes, including cleaning, transformation, and feature engineering. The goal is to ensure that the data is clean, complete, and in a format that is compatible with machine learning algorithms. Key steps in data preparation include:
 
