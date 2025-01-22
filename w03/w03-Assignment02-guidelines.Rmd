@@ -1,0 +1,165 @@
+---
+title: 'Guidelines for Assignment #2'
+author: "(Part I)"
+date: "STA 522: Applied Statistical Machine Learning"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 18px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 16px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 12px;
+    font-family: "Gill Sans", sans-serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   # include code chunk in the output file
+                      warning = FALSE,# sometimes, you code may produce warning messages,
+                                      # you can choose to include the warning messages in
+                                      # the output file. 
+                      results = TRUE, # you can also decide whether to include the output
+                                      # in the output file.
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+This is the first part of assignment #2, also part of the first project on data preparation for machine learning. The part focuses in missing value imputation **using the same data set you used for assignment #1**. 
+
+<font color = "blue">*\color{blue}As previously discussed, every section and subsection of your report should begin with an introductory paragraph that outlines the specific analytic task to be performed in that section or subsection before presenting the actual analysis. When reporting the results, focus on significant findings that have practical implications or inspire further analytical actions to achieve better outcomes.*</font>
+
+
+## 1. Introduction
+
+Write a few paragraphs to summarize the nature of missing value and methods of imputation.
+
+
+## 2. Replacement Imputation for Categorical Features
+
+Two possible replacement methods we can consider for imputing missing values:
+
+* Replace missing values in categorical features with the mode of the corresponding variable.
+* Use the k-nearest neighbors (KNN) algorithm to impute missing values by assigning the value most common among the k-nearest neighbors surrounding the point with the missing data
+
+## 3. Regression-based Imputation for Numerical Features  
+
+Create a subset containing the feature variables associated with the target continuous response variable. Fit a linear regression model using the complete observations from this subset. For instances where the response variable has missing values, predict the missing values using the model's predicted output, adding random error to account for variability. Note that the feature variables can be a mix of categorical and numerical data types.
+
+
+## 4. Multiple Imputation
+
+* Develop a regression model, either linear or nonlinear, as appropriate.
+* Present the results of the regression analysis using the MICE imputation procedure.
+* Apply the same regression model to the imputed dataset obtained in Sections 2 and 3, and compare its performance with the results from the MICE procedure.
+* Provide practical insights and recommendations based on the analysis.
+
+
+
+
+
+
+
+
+
+
+
+
+

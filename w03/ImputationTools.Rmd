@@ -1,0 +1,374 @@
+---
+title: 'Overview of Missing Value Mechnisms, <br> Imputation Methods and Compuational Resources'
+author: "Cheng Peng"
+date: " "
+output:
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 24px;
+  font-weight: bold;
+  color: navy;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-family: system-ui;
+  font-weight: bold;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 16px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 14px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("kernlab")) { # SVM methodology
+   install.packages("kernlab")
+library(kernlab)
+}
+if (!require("e1071")) { # SVM methodology
+   install.packages("e1071")
+library(e1071)
+}
+if (!require("ISLR")) { # contains example data set "Khan"
+   install.packages("ISLR")
+library(ISLR)
+}
+if (!require("RColorBrewer")) { # customized coloring of plots
+   install.packages("RColorBrewer")
+library(RColorBrewer)
+}
+knitr::opts_chunk$set(echo = FALSE,       # include code chunk in the output file
+                      warning = FALSE,   # sometimes, you code may produce warning messages,
+                                         # you can choose to include the warning messages in
+                                         # the output file. 
+                      results = TRUE,    # you can also decide whether to include the output
+                                         # in the output file.
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+# Introduction
+
+
+Missing data are very frequently found in data sets. In classical statistics, missing values are not frequently handled if the statistical power is not influenced significantly and **implicitly** assume that the missingness is at (completely) random (i.e., the missing value doesn't have special distributional patterns). 
+
+In data science and machine learning applications, the primary analytic tasks are related to prediction. If the missing values are not handled appropriately, the resulting models will fail to predict the response if the incoming feature variables contain missing values. 
+
+Some base R functions (including those in the libraries come with the base R package) have options to handle missing values when doing numerical computation. For example, option `na.rm = TRUE` removes records with missing components, `na.omit()` ignores the missing value when doing calculation (the records with missing values still stay in the data).
+
+There are also many user contributed R packages with different function to handle missing values in different ways.
+
+
+
+# Exploration of missing data
+
+There are various R functions defined for exploring missing values in a given data set in different libraries. Next are list of different approaches to missing value exploration and the appropriate libraries. 
+
+**Manipulation of missing data** is implemented in the packages `sjmisc`, `sjlabelled`, `retroharmonize`, `mde` (also providing basic functions to explore missingness patterns), `tidyr` (which abides by     [tidyverse](https://tidyverse.org) principles), and `declared`. In addition, `memisc` provides definable missing values, along with infrastructure for the management of survey data and variable labels. More specifically, `fauxnaif` converts given values to `NA` and `fillr` fills missing values in vectors according to simple    predefined rules. `roperators` provides string arithmetic, reassignment operators, logical operators that handle missing values.
+
+**Missing data patterns** can be identified and explored using the packages `mi` (and its GUI `migui`), `wrangle`, `DescTools`, and `naniar", priority = "core`. `daqapo` is a generic data quality toolbox that can also be used to identify missing data. More specifically, `ggmice` produces plots for the `mice` imputation workflow and can be used for missing data exploration and evaluation of imputation quality.
+
+**Graphics that describe distributions and patterns of missing data** are implemented in `VIM", priority = "core` (which has a Graphical User Interface, VIMGUI, currently archived on CRAN) and `naniar` (which abides by [tidyverse](https://tidyverse.org) principles).
+
+**Tests of the MAR assumption (versus the MCAR assumption)**: Little's test for the MCAR assumption is implemented in `misty`. Other approaches are also available elsewhere: `RBtest` proposes a regression based     approach to test for missing data mechanisms and `PKLMtest` implements a KL-based test for MCAR. In addition, `isni` tests sensitivity to the ignorability assumption by computing the index of local sensitivity to     nonignorability.
+
+**Evaluation**: `missCompare` and `missMethods` offer an entire framework to compare different imputation strategies (with diagnostics and visualizations). The package `Iscores` can also be useful to evaluate imputation quality using a KL-based scoring rule. Simulations to evaluate imputation qualities can be performed using the   function `ampute` of `mice", priority = "core`, the package `simFrame`, which proposes a very general framework for simulations, or the package `simglm`, which simulates data and missing values in simple and generalized linear regression models. Similarly, `imputeTestbench` provides a benchmark to evaluate univariate time series imputation.  In addition, `mi` and `VIM` also provide diagnostic plots that can help evaluate imputation quality.
+
+
+# Likelihood-based Imputation 
+
+**Methods based on the Expectation Maximization (EM) algorithm** are implemented in `norm` and `mvnmle` for   multivariate normal data sets, in `cat` (function `em.cat` for multivariate categorical data), in `mix` (function `em.mix` for multivariate mixed categorical and continuous data). These packages also implement *Bayesian approaches* (with Imputation and Posterior steps) for the same models (functions `da.`XXX for `norm`, `cat` and `mix`) and can be used to obtain imputed complete data sets or multiple imputations (functions `imp.`XXX for `norm`, `cat` and `mix`), once the model parameters have been estimated. `monomvn` proposes similar methods for multivariate normal and  Student t-distributions when the missingness pattern is monotonic.
+
+`CensMFM`, `imputeMulti`, and `MMDai` extend these methods by using an EM approach to fit different mixtures of   multivariate missing data for numeric or categorical data. 
+
+Hierarchical Gaussian and probit models with missing covariate values are implemented in `ppmSuite`. `PReMiuM` implements Dirichlet process mixture models (regression models linking the response to covariates through cluster membership) with missing covariate values.
+
+`imputeR` is also using an EM based imputation framework that offers several different algorithms, including Lasso, tree-based models or PCA. In addition, `TestDataImputation` implements imputation based on EM estimation (and other simpler imputation methods) that are well suited for dichotomous and polytomous tests with item responses.
+    
+**Multiple imputation** is performed using Maximum Likelihood Multiple Imputation in `mlmi`.
+    
+**Full Information Maximum Likelihood** (also known as "direct maximum likelihood" or "raw maximum likelihood is available in `lavaan`(and in its extension `semTools`), `OpenMx`, `rsem`, and `simsem` for handling missing data in structural equation modeling.
+    
+**Bayesian approaches** for handling missing values in model based clustering with variable selection is available in `VarSelLCM`. The package also provides imputation using the posterior mean.
+    
+**Missing values in generalized linear models** can be handled with package `mdmb` for various families. `JointAI` implements Bayesian approaches for generalized linear mixed models and `bild` implements logistic regression with mixed effects for binary longitudinal data allowing missing values. `ClusPred` also handles missing values in mixed model with a fixed group effect, when the group variable is missing. `brlrmr` proposes a method to reduce bias in estimating logistic regressions with missing response.
+    
+**Missing data in item response models** (including Rasch models and extensions) is implemented in `TAM`, `mirt`, `eRm`, and `ltm` for univariate or multivariate responses. `LNIRT` also addresses these models but allows missing values to be specified as "missing-by-design" and `MLCIRTwithin` includes latent-class models.
+    
+**Missing values in outcome of regression models** is handled in `mreg`.
+
+
+# Single Imputation
+
+**Single imputation** procedures are those where one value for a missing data element is filled in without defining an explicit model for the partially missing data. 
+
+
+* **Mean/Median/Mode Replacement**: a method that is often used is mean substitution where missing values are replaced with the variable mean score (or median, mode, . . .). This approach is available in many packages among which `Hmisc` that contains various proposals for imputing with the same value all missing instances of a variable. 
+    
+    
+* **Generic packages**: The packages `VIM` and `filling` contain several popular methods for missing value imputation (including some listed in the sections dedicated to specific methods as listed below). In addition, `simputation` is a general package for imputation by any prediction method that can be combined with various regression methods, and works well with the [tidyverse](https://tidyverse.org).
+    
+* **k-nearest neighbors** is a popular method for missing data imputation that is available in many packages including the main packages `yaImpute", priority = "core` (with many different methods for kNN imputation, including a CCA based imputation) and `VIM`. It is also available in `impute` (where it is oriented toward    microarray imputation). `isotree` uses a similar approach to impute missing values, which is based on similarities between samples and isolation forests.
+    
+* **Hot-deck** imputation is implemented in the package `hot.deck", priority = "core`, with various possible settings (including multiple imputation). It is also available in `VIM` (function `hotdeck`) and a fractional version (using weights) is provided in `FHDI`. `StatMatch` also uses hot-deck imputation to impute surveys from an external dataset. Similarly, `impimp` uses the notion of a "donor" to impute a set of possible values, termed "imprecise imputation".
+    
+* **Random Forest Imputation**: is implemented in `missForest` with a faster version in `missRanger`. `Rforestry` extend this method with variants of the original random forest method.
+    
+* **Other regression based imputations** are implemented in `VIM`(linear regression based imputation in the function `regressionImp`). `iai` tunes optimal imputation based on KNN, tree or SVM and `SurrogateRegression` uses bivariate regressions to perform estimation and inference on partially missing target outcomes.
+    
+* **Matrix completion** is implemented with iterative *PCA/SVD* - decomposition in the package `missMDA", priority = "core` for numerical, categorical and mixed data (including imputation of groups). *NIPALS* (also based on SVD computation) is implemented in the packages `mixOmics` (for PCA and PLS), `ade4`, `nipals` and `plsRglm` (for generalized model PLS). `cmfrec` is also a large package dedicated to matrix factorization (for recommender systems), which includes imputation. Other PCA/factor based imputations are available in `pcaMethods` (with a Bayesian implementation of PCA), in `primePCA` (for heterogeneous missingness in high-dimensional PCA)   and `tensorBF` (for 3-way tensor data).
+    
+* **Low rank based imputation** is provided in `softImpute", priority = "core`, which contains several methods for iterative matrix completion. `eimpute` implements an efficient imputation methods based on low rank approximation of large matrices. Low rank imputation methods are also available in the very general package `rsparse`, which contains various tools for sparse matrices. Variants based on low rank assumptions are available  in `denoiseR`, in `mimi`, in `ECLRMC` and `CMF` (for ensemble matrix completion), and in `ROptSpace` (with a computationally efficient approach).
+    
+* **Copula Imputation** is implemented in `CoImp` with a semi-parametric imputation procedure and in `mdgc` using Gaussian copula for mixed data types.
+    
+* **Self-organizing Maps Imputation** is provided in `SOMbrero` and `missSOM`.
+    
+* **Validation Rules Imputation** is implemented in `deductive`.
+    
+
+# Multiple Imputation
+
+Multiple imputation relies on regression models to predict the missingness and missing values, and incorporates uncertainty through an iterative approach. Key advantages over a complete case analysis are that it preserves N without introducing bias if data are MAR, and provides corrects SEs for uncertainty due to missing values.
+Some of the above mentioned packages can also handle multiple imputations.
+
+
+* **Bootstrap multiple imputation using EM** to estimate the parameters was available in `Amelia`. For quantitative data it imputes assuming a Multivariate Gaussian distribution. In addition, [AmeliaView](https://cran.r-project.org/web/packages/Amelia/vignettes/ameliaview.html) is a GUI for `Amelia`, available from the [Amelia web page](https://gking.harvard.edu/amelia).  `FastImputation` provides a fast approximation of the imputation process used in `Amelia`. `NPBayesImputeCat` also implements multiple imputation by joint modeling for categorical variables but using a Bayesian approach.
+
+* **multiple Imputation by Chained Equations** was implemented in `mi`, `mice`, and `smcfcs`. Other packages are based on or extend `mice`, like `miceFast`, which provides an alternative implementation of mice imputation methods using object oriented style programming and C++, `bootImpute`, which performs bootstrap based imputations and analyses of these imputations, and `miceRanger`, `CALIBERrfimpute`, and `RfEmpImp`, which all perform multiple imputation by chained equations using random forests.
+    
+    
+* **Multiple imputation based on Markov models** is proposed in `niaidMI`.
+
+* **Dealing with multiply imputed data sets**: `mitools` provides a generic approach to handle multiple imputation in combination with any imputation method, `cobalt` computes balance tables and plots for multiply imputed data sets, `SynthTools` provides confidence intervals for multiply imputed data sets, `miceafter` allows  different types of statistical analyses and pooling after multiple imputation.
+    
+    In addition, `mitools` provides a generic approach to handle multiple imputation in combination with any imputation method and `cobalt` computes balance tables and plots for multiply imputed data sets.
+    
+   + `missMDA` implements multiple imputation based on *SVD methods*.
+   + `hot.deck` implements *hot-deck*-based multiple imputation.
+   + `rMIDAS` implements multiple imputation based on *denoising auto-encoders*.
+   + *Multilevel imputation*: Multilevel multiple imputation is implemented in `jomo", priority = "core`, `mice`,    `miceadds`, `micemd`, `mitml`, and `pan`.
+   + `gerbil` implements multiple imputation using latent joint multivariate normal models.
+   +  `Qtools` and `miWQS` implement multiple imputation based on *quantile regression*.
+   + `lodi` implements the *imputation of observed values below the limit of detection* (LOD) via censored likelihood multiple imputation (CLMI).
+    
+    
+
+# Weighting methods 
+
+* **Computation of weights** for observed data to account for unobserved data by *Inverse Probability Weighting (IPW)* is implemented in `ipw` and `iWeigReg`. `nawtilus` also proposes IPW computation but utilizing estimating equations suitable for a specific pre-specified parameter of interest.
+
+* IPW is also for **quantile estimations and boxplots** in `IPWboxplot`.
+
+* **Doubly Robust Inverse Probability Weighted Augmented GEE Estimator with missing outcome** is implemented in `CRTgeeDR`.
+
+* **IPW for time-course missing data** is implemented in `MIIPW`.
+
+
+# Imputation for Specific Data Types
+
+
+*Longitudinal data / time series data*: Imputation for time series is implemented in `imputeTS", priority = "core`. Other packages, such as `forecast`, `spacetime`, `timeSeries`, `xts`, `prophet`, `stlplus`, or `zoo`, are dedicated to time series but also contain some (often basic) methods to handle missing data (see also `TimeSeries`). Based on tidy principle, the `padr` and `tsibble` also provide methods for imputing missing values in time series. Similarly, `DTSg` offers basic functionality for missing value description and imputation in   time series based on the fast `data.table` framework.
+
+   + More specific methods are implemented in other packages: imputation of time series based on Dynamic Time Warping is implemented in the family of packages `DTWBI`, and `DTWUMI`. `BMTAR` provides an estimation of the autoregressive threshold models with Gaussian noise using a Bayesian approach in the presence of missing data in multivariate time series. `swgee` implements an IPW approach for longitudinal data with missing observations. `tsrobprep`implements imputation of missing values using a robust decomposition of the time series. `brokenstick` handles missing at random data in irregular time series with a brokenstick approach. `TRMF` uses temporally regularized matrix factorizations to impute values in high-dimensional time series.
+    
+   + For more specific time series, `cold` fits longitudinal count models from data with missing values.
+    
+   + Estimation of extremal indexes in time series is implemented in `exdex` with K-gaps and D-gaps models that can accommodate with missing values.
+    
+* **Markov models**: `hhsmm` includes various methods for hidden hybrid Markov and semi-Markov models that can accomodate missing data.
+
+* **Spatial data**: Imputation for spatial data is implemented in the package `rtop`, which performs geostatistical interpolation of irregular areal data, and in `areal`, which performs areal weighted interpolation using a tidyverse data management. `RcppCensSpatial` estimates parameters in linear spatial models with missing data using EM, SAEM, or MCEM.  Interpolation of spatial data based on genetic distances is also available in `phylin`.
+
+* **Spatio-temporal data** (see also `SpatioTemporal`): Imputation for spatio-temporal data is implemented in the package `StempCens` with a SAEM approach that approximates EM when the E-step does not have an analytic form. From an application perspective, `gapfill` is dedicated to the imputation of satellite data observed at equally-spaced points in time and `stfit` uses Functional Principal Analysis by Conditional Estimation to impute missing pixels in satellite data. `momentuHMM` is dedicated to the analysis of telemetry data using generalized hidden Markov models (including multiple imputation for missing data).
+
+* **Distance matrices**: Imputation for Euclidean distance matrix is implemented in `edmcr`, using different optimization approaches.
+
+* **Graphs/networks**: `missSBM` imputes missing edges in Stochastic Block models, `cglasso` implements an extension of the Graphical Lasso inference from censored and missing value measurements, and `bnstruct` provides an extension of various methods for Bayesian network inference from data with missing values. Oriented toward inference of species community networks, `eicm` uses an extension of binomial GLM that handles missing values and `robber` is based on stochastic block models and also handles missing values. `rnmamod` includes functions to explore network meta-analysis with missing participant outcome data in clinical trials.
+
+* **Imputation for contingency tables** is implemented in `lori` that can also be used for the analysis of contingency tables with missing data.
+
+* **Imputation for compositional data (CODA)** is implemented in `robCompositions` and `zCompositions` (various imputation methods for zeros, left-censored and missing data).
+
+* **Rank models** with partially missing rankings are handled in `BayesMallows` with Bayesian methods, and in `irrNA` to compute inter-rater reliability and concordance.
+
+* **Experimental design**: `experiment` handles missing values in experimental design such as randomized experiments with missing covariate and outcome data, and matched-pairs design with missing outcome.
+
+* **Recurrent events**: `dejaVu` performs multiple imputation of recurrent event data based on a negative binomial regression model.
+
+
+# Missing Value Issues in Specific Tasks 
+
+* **Regression and classification**: many different supervised methods can accommodate the presence of missing values. `randomForest`, `grf`, and `StratifiedRF` handle missing values in predictors in various random forest based methods.
+
+  + `toweranNA` handles missing values in predictions without imputation in linear model, GLM and KNN based regressions. `misaem` handles missing data in linear and logistic regression and allows for model selection. `psfmi` also provides a framework for model selection for various linear models in multiply imputed datasets and `flare` accommodates missing values in some models related to Lasso regression.
+    
+  + `naivebayes` provides an efficient implementation of the naive Bayes classifier in the presence of missing data. `plsRbeta` implements PLS for beta regression models with missing data in the predictors. `lqr` provides quantile regression estimates based on various distributions in the presence of missing values and censored data. `eigenmodel` handles missing values in regression models for symmetric relational data. 
+    
+* **Clustering**: `biclustermd` handles missing data in biclustering. `RMixtComp`, `MGMM`, `mixture`, and `MixtureMissing` fit various mixture models in the presence of missing data. `ClustImpute` deals with missing values in k-means clustering. `gbmt` performs clustering to identify similar trajectories in multivariate longitudinal data containing missing values. `LUCIDus` performed clustering from multiple omics when some omics are missing. `miclust` handles multiple imputation in clustering.
+
+
+* **Tests** for two-sample paired missing data are implemented in `robustrank`, `IncomPair`, and `MKinfer`, the  latter is based on multiple imputed datasets. Reliability of tests for data with missing values is assessed with a Bayesian approach in `brxx`.
+
+* **Meta-analysis**: `metavcov` offers a collection of functions, including multiple imputations for missing data, in multivariate meta-analyses. `metansue` can perform meta-analysis with some missing (unreported) effects. More specifically, imputation for *meta-analyses* of binary outcomes is provided in `metasens` and `NMADiagT` provides a Bayesian analysis using network meta-analysis of dose response studies in which MNAR missing values are accounted for.
+
+* **Sensitivity analysis** and confidence intervals with non-ignorable missingness patterns are handled in `ui`.
+
+* **Outlier detection** (and robust analysis) in the presence of missing values is implemented in `GSE` and `rrcovNA`.
+
+* **ROC estimation** in the presence of missing values is available in `bcROCsurface` for ROC surface and in `BLOQ` for left censored data (*Caution: not missing value*).
+
+
+* **Mediation analysis** in the presence of missing values is implemented in `bmem` and `bmemLavaan`, the latter designed to handle non-normal data. `paths` uses an imputation method for the estimation of path specific effects in causal mediation analysis.
+
+* **Composite Indicator** can be imputed with the package `COINr`.
+
+* **Fuzzy logic**: `lfl`contains basic fuzzy-related algebraic functions capable of handling missing values for fuzzy logic.
+
+* **ODE**: An implementation of the parameter cascade method for estimating ordinary differential equation models with missing or complete observations is provided in the package `pCODE`.
+
+\
+
+# Specific Application Fields
+
+Researcher from different areas developed various tools to impute missing values in their fields.
+
+* **Genetics**: Imputation of SNP data is implemented in `alleHap` (using solely deterministic techniques based on pedigree data), in `QTLRel` (using information on flanking SNPs), in `snpStats` (using a nearest neighbor approach), in `HardyWeinberg` (using multiple imputations with a multinomial model based on allele intensities and/or flanking SNPs). In addition, `SNPassoc` and `SNPfiltR` offer functions to explore missing SNPs.
+
+    + EM algorithm is used to compute genetic statistics for population in the presence of missing SNP in `StAMPP` and to fit genotype-to-phenotype models in `FamEvent`, `hapassoc`,  and `Haplin`.
+    
+    + Finally, `FILEST` is used to simulate SNP datasets with outlying individuals and missing values.
+    
+    
+* **Phylogeny**: Imputation of missing data for phylogeny is implemented in `Rphylopars` with different evolutionary models. Simulation of incomplete phylogeny can be performed with `TreeSim`.
+
+* **Genomics**: Imputation for dropout events (i.e., under-sampling of mRNA molecules) in single-cell RNA-Sequencing data is implemented in `DrImpute`, `SAVER`, and `iCellR`, and is based, respectively, on clustering of cells, Markov affinity graph, an empirical Bayes approach, and k-nearest neighbors.
+    
+    + The first three packages are used and combined in `scRecover` and `ADImpute` and the last one can also handle other types of single-cell data, such as scATAC-Seq or CITE-Seq.
+    
+    + `RNAseqNet` uses hot-deck imputation to improve RNA-seq network inference with an auxiliary dataset.
+    
+* **Chemometrics**: `imp4p`, `wrProteo`, `mi4p`, `imputeLCMD` and `aLFQ` use imputation for protein quantification from LC-MS/MS data. The first three use multiple imputation and `imp4p`, `wrProteo`, and `imputeLCMD` can work under an MNAR mechanism. Other packages implementing imputations for MS proteomics data are available on bioconductor, including 
+    + `msImpute` (MAR and MNAR mechanisms) and `ProteoMM`. 
+    + `proteDA` performs differential analysis on the same type of data but implementing a probabilistic dropout model to handle missingness.
+    
+    + Imputation for quantified metabolomics data is implemented in `lilikoi` with a k-NN approach and in `MAI` with a two step approach where the first step aims at identifying the missingness mechanism.
+    
+    + Imputation of data under detection limit for NIR spectra is provided in `NIRStat` for standard analyses of NIR time series.
+    
+    
+* **Epidemiology**: `bayesCT` implements various methods for simulation and analysis of clinical trials in a Bayesian framework that allows for handling and imputation of missing data. `sanon` implements a method for analysis of randomized clinical trials with strata that can handle MCAR data. `didimputation` implements treatment effect estimation and pre-trend testing in diff-in-diff designs with an imputation approach. `diyar` implements record linkage and epidemiological case definitions while addressing missing data across linkage stages.
+
+    More specifically, `InformativeCensoring` implements multiple imputation for informative censoring. `pseval` evaluates principal surrogates in a single clinical trial in the presence of missing counterfactual surrogate   responses. `sievePH` implements continuous, possibly multivariate, mark-specific hazard ratio with missing values in multivariate marks using an IPW approach. `icenReg` performs imputation for censored responses for interval data.
+    
+* **Health**: `missingHE` implements models for health economic evaluations with missing outcome data. `accelmissing` provides multiple imputation with the zero-inflated Poisson lognormal model for missing count values in accelerometer data. `CGManalyzer` provides tools for the analysis of continuous glucose monitoring that can handle missing data. `qpNCA` implements imputation for noncomportmental pharmacokinetic longitudinal data mostly using interpolation methods.
+
+* **Morphometry**:  `LOST` can be used to simulate missing morphometric data randomly, with taxonomic bias and with anatomical biases.
+
+* **Environment**: `AeRobiology` imputes missing data in aerobiological datasets imported from aerobiological public databases.
+    + `climatol` implements functions for missing data filling of climatological series. 
+    + `QUALYPSO` can handle missing data and provides unbiased estimates of climate change responses for incomplete ensembles of climate projections.
+    
+* **Social sciences**: `coefficientalpha` computes coefficients Alpha, social, behavioral and education sciences, in the presence of missing data.
+
+* **Causal inference**: Various methods for causal inference with missing data are implemented in `targeted`, using augmented IPW estimators. Causal inference with interactive fixed-effect models is available in `gsynth`, with missing values handled by matrix completion, and in `dosearch`, via extension of do-calculus to missing data. 
+    + `R6causal` implements R6 class for structural causal models where the missing data mechanism can be specified.
+    + `MatchThem` matches multiply imputed datasets using several matching methods, and provides users with tools to estimate causal effects in each imputed dataset. 
+    + `grf` offers treatment effect estimation with incomplete confounders and covariates under modified unconfoundedness assumptions, and 
+    + `RCAL` implements regularized calibrated estimation for causal inference with missing values and high dimension.
+    
+* **Finance**: `imputeFin` handles imputation of missing values in financial time series using AR models or random walk.
+* **Finance**: Basic methods (mean, median, mode, ...) for imputing missing data in scoring datasets are proposed in `scorecardModelUtils`.`creditmodel` can handle missing values treatment for credit modeling.
+
+* **Preference models**: Missing data in preference models are handled with a composite link approach that allows for MCAR and MNAR patterns to be accounted for in `prefmod`.
+
+* **Administrative records / Surveys**: `BIFIEsurvey` is a very general package that contains tools for survey statistics and that can handle multiply imputed datasets. More specifically, `fastLink` provides a Fellegi-Sunter probabilistic record linkage that allows for missing data and the inclusion of auxiliary information. `eatRep` implements replication methods in complex survey designs comprising multiple imputed variables, and `modi` provides multivariate outlier detection and `convergEU` can process data from Eurostat data and impute missing   values to monitor convergence between EU countries. 
+
+* **Bibliometry**: `robustrao` computes the Rao-Stirling diversity index (a well-established bibliometric indicator to measure the interdisciplinarity of scientific publications) with data containing uncategorized references. `metagear` provides hot-deck imputation in bibliographic data for systematic reviews and meta-analysis.
+
+* **Agriculture**: `geneticae` implements imputation techniques for multi-environment agronomic trials.
