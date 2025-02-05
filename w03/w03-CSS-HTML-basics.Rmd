@@ -1,0 +1,452 @@
+---
+title: '<font color = "purple"><B>Basics of HTML and CSS</b></font>'
+author: "Cheng Peng"
+date: "West Chester University"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_collapsed: yes
+    toc_depth: 4
+    css: cpRMDstyle.css
+    number_sections: yes
+    code_folding: hide
+    code_download: yes
+    theme: lumen
+---
+```{=html}
+<style type="text/css">
+
+code, pre {
+  font-family: "Fira Code", "Consolas", "Courier New", monospace;
+  font-size: 14px;
+  background-color: #f5f5f5;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+  p0 {
+     background-color: purple;
+     color: gold;
+     text-align: center;
+     font-size: 16px;
+     font-weight:bold
+     text-shadow: 2px 2px red;
+   } 
+
+</style>
+```
+
+```{r setup, include=FALSE}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("gifski")) {
+   install.packages("gifski")
+   library(gifski)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+   library(plotly)
+}
+# knitr::opts_knit$set(root.dir = "C:\\STA490\\w05")
+knitr::opts_chunk$set(echo = TRUE,       
+                      warning = FALSE,   
+                      result = TRUE,   
+                      message = FALSE,
+                      comment = NA)
+```
+
+\
+
+# Introduction
+
+HTML (HyperText Markup Language) and CSS (Cascading Style Sheets) are fundamental technologies for building web pages. HTML structures the content, while CSS controls the design and layout. Together with JavaScript, they enable the creation of dynamic and visually appealing websites.
+
+
+# HTML Basics
+
+HTML is the standard markup language for creating web pages. It structures content using elements such as headings, paragraphs, lists, links, and images. These elements serve as the building blocks of web pages, enabling developers to embed multimedia, create forms, and define the overall layout.
+
+## HTML Building Blocks
+
+HTML (HyperText Markup Language) is built using elements enclosed within tags, which define the structure and content of a webpage. These elements can be broadly categorized into:
+
+* **Structural Elements** help organize content. Here are commonly used one
+  + `<head>` - a container for introductory content or a set of navigational links  
+  + `<section>`- a section in a documen 
+  + `<article>`- contain the main content of a page 
+  + `<footer>`- defines a footer for a document or section
+  
+* **Text Content Elements** define and format text. 
+  + `<p>` - paragraph 
+  + `<h1> to <h6>`- heading levels 
+  + `<span>` - mark up a part of a text or a part of a document 
+  + `<strong>`- define text with strong importance 
+  + `<em>` - emphasizes text
+  
+* **Multimedia Elements** embed media.
+  + `<img>` - a self-closing tag for inserting an image
+  + `<audio>` - inserts an audio 
+  + `<video>`- inserts a video 
+  
+* **Interactive Elements** enhance user engagement. 
+  + `<a>` - creates a hyperlink 
+  + `<button>` - creates a web button 
+  + `<form>` - creates a web form
+  + `<input>`- specifies an input field where the user can enter data 
+  
+* **List and Table Elements** organize content into lists and tables.
+  + `<ul>` - unordered list 
+  + `<ol>` - ordered list
+  + `<table><tr><td> ... </td></tr></table>` - defines HTML table 
+  + `<tr>` - defines table row
+  + `<td>` - defines table column
+
+Note taht properly closing HTML tags ensures well-structured and valid code. While some tags (like `<img>` and `<br>`) are self-closing, most require an explicit closing tag (e.g., `<div>`...`</div>`). Using proper indentation and validation tools can help catch missing tags.
+
+
+
+## HTML Structure 
+
+HTML (HyperText Markup Language) structure consists of a well-defined hierarchy of elements that organize and display content on a webpage. Below is the basic structure of an HTML document:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">      <!-- the page is encoded in UTF-8 -->
+    <title>My Web Page</title>
+    <link rel="stylesheet" href="styles.css">   <!-- External CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>This is some information about me.</p>
+        </section>
+
+        <section id="services">
+            <h2>Services</h2>
+            <p>Details about the services offered.</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Website. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+```
+The above HTML produces the following web page
+
+```{r echo = FALSE, fig.align='center', out.width="60%"}
+include_graphics("sampleWebpage.png")
+```
+
+
+
+
+## More on Table Structure
+
+The following code produces an illustrative example of HTML table.
+
+
+```
+<table border = "2" bordercolor="green"  bgcolor="gray"  width="90%">
+  <tr bordercolor="red">
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+</table>
+```
+
+<table border = "2" bordercolor="green"  bgcolor="skyblue"  width="80%">
+  <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+</table>
+
+
+# Basics of CSS
+
+CSS (Cascading Style Sheets) is a stylesheet language used to control the presentation and layout of HTML documents. It allows developers to apply styles, such as colors, fonts, spacing, and positioning, to web pages.
+
+## CSS Syntax
+
+A CSS rule consists of a selector and a declaration block:
+
+```
+selector {
+  property: value;
+}
+```
+
+**Example** The following example css styles all `<p>` elements to have *blue text* and a *font size* of 16 pixels. The following 
+
+```
+<style>
+p0 {
+     background-color: purple;
+     color: gold;
+     text-align: center;
+     font-size: 16px;
+     font-weight:bold
+     text-shadow: 2px 2px red;
+}
+</style>
+```
+
+Add the above selector to the `<style> ... </style>` at the beginning of this document to make the source clean. The elements (text) of css selector `<p0>` in the following will produce the text that have the above properties.
+
+```
+<center>
+<p0>
+The font color of this paragraph is blue and font size is 16px.
+</p0>
+</center>
+```
+
+<center>
+<p0>
+The font color of this paragraph is blue and font size is 16px.
+</p0>
+</center>
+
+
+\
+
+**Remark**: Some of the properties in a selector in css style file may not be rendered in some browsers. In this case, we can use HTML tag to style the text. In the above example, we use HTML tag `<center> ... </center>` to align the text in the css selector `<p0> ...</p0>`.
+
+
+
+
+## Commonly Used Selectors
+
+In this subsection, we list some commonly used css selectors without providing illustrative examples to demonstrate the effect.
+
+* Universal Selector (`*`): `* { margin: 0; padding: 0; }`
+
+* Type Selector (element): `p { font-size: 16px; }`
+
+* Class Selector (.class-name): `.container { width: 80%; margin: auto; }`
+
+* ID Selector (#id-name): `#header { background-color: blue; }`
+
+* Group Selector (selector1, selector2): `h1, h2, h3 { color: darkblue; }`
+
+* Descendant Selector (parent child): `div p { color: gray; }`
+
+* Child Selector (parent > child): `div > p { font-weight: bold; }`
+
+* Adjacent Sibling Selector (element1 + element2): `h1 + p { font-style: italic; }`
+
+* General Sibling Selector (element1 ~ element2): `h1 ~ p { color: red; }`
+
+* Attribute Selector ([attribute]): `input[type="text"] { border: 1px solid black; }`
+
+
+## Commonly Used Properties
+
+* Text & Font Properties
+  + color: Sets the text color: `p { color: blue; }`
+  + font-size: Defines text size: `h1 { font-size: 24px; }`
+  + font-family: Specifies font: `body { font-family: Arial, sans-serif; }`
+  + font-weight: Controls boldness: `p { font-weight: bold; }`
+  + text-align: Aligns text: `h2 { text-align: center; }`
+  + text-decoration: Modifies text style: `a { text-decoration: none; }`
+
+* Box Model Properties
+  + width & height: Define element size: `div { width: 100px; height: 50px; }`
+  + padding: Space inside the border: `div { padding: 10px; }`
+  + margin: Space outside the border: `div { margin: 20px; }`
+  + border: Defines element border: `div { border: 2px solid black; }`
+  
+* Layout & Positioning
+  + display: Specifies layout behavior: `div { display: flex; }`
+  + position: Controls element positioning: `div { position: absolute; top: 50px; left: 20px; }`
+  + z-index: Stacks elements: `div { z-index: 10; }`
+  + overflow: Manages content overflow: `div { overflow: hidden; }`
+
+* Flexbox Properties
+  + justify-content: Aligns items horizontally: `.container { display: flex; justify-content: center; }`
+  + align-items: Aligns items vertically: `.container { align-items: center; }`
+  + flex-direction: Defines main axis direction: `.container { flex-direction: column; }`
+
+
+# Methods of Including CSS
+
+There are three ways of inserting a style sheet in the RMarkdown document: inline CSS, internal CSS, and external CSS. We have used all three different formats of CSS in this RMD to format the text or decorate the layout on different occasions. To summarize,
+
+
+## Inline CSS
+
+**inline CSS** is a method of applying styles directly to an HTML element using the style attribute. This approach allows you to define CSS rules on a per-element basis without needing an external stylesheet or internal `<style> ... </style>` block. For example, `<font style = "font-size: 10px; color: darkred; font-weight:bold; font-family:verdana;">`
+`font size, face, color, etc.</font>` produces the properties in the text with the specified properties: <font style = "font-size: 10px; color: darkred; font-weight:bold; font-family:verdana;"> font size, face, color, etc.</font>
+
+* Advantages of Inline CSS
+  + *Quick and Easy*: No need for an external stylesheet.
+  + *Overrides Other Styles*: Inline styles have higher specificity than internal and external styles.
+  + *Useful for Testing & Email Templates*: Handy for rapid prototyping and in HTML emails where external styles may not work.
+
+* Disadvantages of Inline CSS
+  + *Not Reusable*: You must repeat styles for each element, leading to redundancy.
+  + *Hard to Maintain*: Changes require updating multiple elements.
+  + *Poor Readability*: Mixing HTML and CSS can make the code messy and harder to manage.
+
+
+
+## Internal CSS
+
+Internal CSS is a method of applying CSS styles directly within an HTML document by embedding the styles inside a `<style>` tag within the `<head>` section. This method is useful for styling a single web page without affecting other pages. The following is an simple example HTML file.
+
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal CSS Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        h1 {
+            color: blue;
+            text-align: center;
+        }
+        p {
+            color: darkslategray;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Internal CSS</h1>
+    <p>This is an example of how to use internal CSS in an HTML document.</p>
+
+</body>
+</html>
+```
+
+* Advantages of Internal CSS:
+  + Allows styling a single document without needing an external stylesheet.
+  + Reduces HTTP requests since styles are included in the same HTML file.
+  + Enables quick styling changes for a single page.
+
+* Disadvantages of Internal CSS:
+  + Increases page load time if styles are large.
+  + Makes code less maintainable compared to external CSS.
+  + Cannot be reused across multiple pages.
+
+
+
+
+## External CSS
+
+External CSS is a method of applying styles to a webpage using a separate .css file. This approach allows for better organization, easier maintenance, and reusability of styles across multiple HTML pages.
+
+**How It Works**
+
+* Create a separate CSS file (e.g., styles.css).
+* Link the CSS file to an HTML document using the `<link>` tag inside the `<head>` section.
+
+**Example** 
+
+Save the following CSS as an external file with name `style.css`
+
+
+\begin{verbatim}
+body {
+    background-color: lightgray;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: blue;
+    text-align: center;
+}
+
+p {
+    font-size: 18px;
+    color: darkgray;
+}
+\end{verbatim}
+
+The above external file will be used in the following HTML file.
+
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External CSS Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Welcome to External CSS</h1>
+    <p>This is an example of using an external stylesheet.</p>
+</body>
+</html>
+```
+
+
+
