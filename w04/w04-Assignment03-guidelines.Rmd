@@ -1,0 +1,165 @@
+---
+title: 'Guidelines for Assignment #2'
+author: "(Part II: Feature Engineering)"
+date: "STA 522: Applied Statistical Machine Learning"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 18px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 16px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 12px;
+    font-family: "Gill Sans", sans-serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   # include code chunk in the output file
+                      warning = FALSE,# sometimes, you code may produce warning messages,
+                                      # you can choose to include the warning messages in
+                                      # the output file. 
+                      results = TRUE, # you can also decide whether to include the output
+                                      # in the output file.
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+This is the second part of assignment #2, also part of the first project on data preparation for machine learning. This part focuses on featuring engineering **using the same data set you used for assignment #1** and the patterns observed in assignment #1 on visual EDA. 
+
+<font color = "blue">*\color{blue}As previously discussed, every section and subsection of your report should begin with an introductory paragraph that outlines the specific analytic task to be performed in that section or subsection before presenting the actual analysis. When reporting the results, focus on significant findings that have practical implications or inspire further analytical actions to achieve better outcomes.*</font>
+
+
+Since some of the feature engineering procedures can be classified into multiple categories. You can based on your need to organize your analysis. The following outline is based on my views on different types of feature engineering methods. 
+
+
+
+## 1. Introduction
+
+<font color = "red"><b>Add</b></font> a few paragraphs to the introduction of the part I of this assignment to summarize feature engineering tasks to be performed based on patterns observed in **assignment #1**.
+
+## 2. Feature Transforming 
+
+* **Skewness "correction"**: Use insights from last week’s visual EDA to identify numerical variables with extreme skewness and then transform these skewed variables to obtain new less-skewed feature variables.
+* **Feature Transformations**: Apply transformations to improve data distribution and prepare for modeling:
+  + *Scaling*: Normalize or standardize numerical features to ensure consistent ranges.
+  + *Standardization*: Transform variables to have zero mean and unit variance, improving model performance on distance-based algorithms.
+
+## 3. Feature Selection 
+
+There different methods for feature selection:
+
+* **Model-Based Selection**: Uses criteria such as $R^2$ , AIC, SBC, or log-likelihood ratios to evaluate feature importance.
+* **Regularization-Based Selection**: Prioritizes features based on their practical significance, often using penalties (e.g., Lasso, Ridge).
+* **Domain Knowledge-Based Selection**: Involves expert judgment to remove irrelevant or redundant features, including machine-generated variables.
+
+<font color = "red">For this assignment, we will only filter the dataset to identify features that can be excluded from further analysis. Other selection methods will be considered in later steps. </font>
+
+## 4. Feature Creation  
+
+If needed, the following methods could be summarized in this subsection:
+
+* **Category Regrouping**: Combines sparse or imbalanced categorical levels to improve model stability and interpretability.
+* **Discretization of Multi-modal Variables**: Converts continuous variables with multiple peaks into categorical bins to capture distinct patterns.
+* **Feature Engineering with Model-Based Methods**: Creates new variables using clustering (e.g., K-means) or other statistical techniques to extract meaningful patterns.
+* **Principal Component Analysis (PCA)**: Reduces dimensionality by transforming correlated features into uncorrelated principal components, preserving the most significant variance.
+
+
+
