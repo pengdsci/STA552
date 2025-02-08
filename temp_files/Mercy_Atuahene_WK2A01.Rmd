@@ -1,0 +1,688 @@
+---
+title: "Identification of Factors Associcated with Diabetes in the USA"
+#subtitle: "Behavioral Risk Factor Surveillance System (BRFSS)"
+author: "Mercy Atuahene" 
+date: "February 5, 2025"
+affiliation: "West Chester University of Pennsylvania, Department of Statistics"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+ 
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 18px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 16px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 12px;
+    font-family: "Gill Sans", sans-serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   # include code chunk in the output file
+                      warning = FALSE,# sometimes, you code may produce warning messages,
+                                      # you can choose to include the warning messages in
+                                      # the output file. 
+                      results = TRUE, # you can also decide whether to include the output
+                                      # in the output file.
+                      message = FALSE,
+                      comment = NA
+                      )  
+#setwd("~")
+#setwd("/Users/mkatuahene/Desktop/WCU/R-Machine Learning/Assignment/Week 2") 
+```
+
+\
+
+## 1. Abstract
+This analysis studies the relationships among health indicators and diabetes status via exploratory data analysis visualizations. It is based on a sample data from the Diabetes Health Indictors dataset (BRFSS 2015). We first use visualization methods to look at individual variable distributions and then examine associations between different types of variables like diabetes status and BMI through histograms, box plots and density plots. We also explored relations between numerical variables and categorical variables via box plots to illustrate how distributions of BMI vary across diabetes groups. We also looked at high dimensional relations using faceted and interactive plots. Together, these provided preliminary insights into the patterns of relationships that exist in the dataset and help explain factors associated with diabetes for further analysis.  
+
+
+\
+
+## 2. Introduction
+  In the USA, diabetes impacts over 37 million Americans and 1 in 5 people with diabetes do not know they have it according to the CDC. Over 38% of the US population have pre-diabetes - a condition that increases the risk of developing type 2 diabetes. It is one of the most prevalent chronic diseases in the US <a   href="https://www.cdc.gov/pcd/issues/2019/19_0109.htm" target="_blank"> Xie et al (2019)</a> . This presents a public health issue that has economic burdens, increased mortality rates and other health complications. It is estimated that the economic burden of diabetes in the US is about $327 billion anually with the cost of care on the rise. With a rise in the number of diabetes cases in recent years and its economic burden, understanding of risk factors driving these numbers are essential to enable policies that intervene on this national health crises. Tracking of cases by the BRFSS is one way the US is using to curb diabetes prevalence and its associated risk factors and also to intervene on modifiable lifestyle choices. For more details, visit <a href="https://www.cdc.gov/diabetes/about/index.html?utm_source=chatgpt.com#cdc_disease_basics_quick_facts_callout_callout-diabetes-by-the-numbers" target="_blank">Diabetes Basics</a> 
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is a telephone survey conducted annually by the Center For Disease Control and Prevention (CDC) to collect uniform, state-specific data on US adults' health-related risk behaviors, chronic health conditions like diabetes, and use of preventive services. The focus of the survey is to collect data on demographics and social determinants of health, mental health and well being, health risk behaviors, chronic health conditions and use of preventive services in the United States population. It is an important system that helps public health personnel to design policies and health programs that benefits states and local agencies. Data from the system and the current analysis is utilized in the identification of risk factors that contribute to chronic diseases and health disparities among different populations, etc. We will particularity, explore the ability to identify which feature variables in the data are associated with diabetes either alone or in combination with other risk factors and also use advance methods in machine learning to accurately predict which individuals have diabetes based on the risk factors reported in the literature. 
+
+
+* **Description of Data**
+
+  We will use the 2015 BRFSS data in our exploratory analysis of the feature variables in this dataset. The dataset contains clean data originating from the original dataset which contained 441, 455 individuals and has 330 features. The clean version contains 253,681 survey responses from the CDC's BRFSS 2015. It contains 21 feature variables and obtained from the kaggle website <a   href="https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset?utm_source=chatgpt.com&select=diabetes_b   inary_health_indicators_BRFSS2015.csv" target="_blank">Diabetes Health Indicators Dataset</a>
+
+* **Feature Variables**
+
+  The clean dataset (BRFSS2015) contains the following features
+   * **Target feature:** a categorical feature indicating if an individual has diabetes or not, Diabetes_binary (0 = no diabetes, 1 = prediabetes or diabetes)
+   
+   * **Independent variables**
+     + HighBP: a categorical feature (0 = no high BP, 1 = high BP)
+     + HighChol: a categorical feature that indicates if an individual has high cholesterol (1 = Yes, 0 = No)
+     + CholCheck: a categorical feature that indicates if an individual had their cholesterol checked in the past five years (1 = Yes, 0 = No)
+     + BMI: Body Mass Index,a continuous numerical feature based on the measure of body fat based on height and weight
+     + Smoker: a categorical feature that indicates if an individual has smoked at least 100 cigarettes in their lifetime (1 = Yes, 0 = No)
+     + Stroke: a categorical feature that indicates if an individual has had a stroke (1 = Yes, 0 = No)
+     + HeartDiseaseorAttack: a categorical feature that indicates if an individual has coronary heart disease or a heart attack (1 = Yes, 0 = No)
+     + PhysActivity: a categorical feature that indicates if an individual has engaged in physical activity in the past 30 days (1 = Yes, 0 = No)
+     + Fruits: a categorical feature that indicates if the individual consumes fruits at least once per day (1 = Yes, 0 = No)
+     + Veggies: a categorical feature that indicates if the individual consumes vegetables at least once per day (1 = Yes, 0 = No)
+     + HvyAlcoholConsump: a categorical feature that indicates heavy alcohol consumption (1 = Yes, 0 = No)
+     + AnyHealthcare: a categorical feature that indicates if the individual has any kind of health care coverage (1 = Yes, 0 = No)
+     + NoDocbcCost: a categorical feature that indicates if the individual could not see a doctor due to cost in the past 12 months (1 = Yes, 0 = No)
+     + GenHlth: a categorical feature that indicates General health status (1 = Excellent, 2 = Very good, 3 = Good, 4 = Fair, 5 = Poor)
+     + MentHlth: a numerical feature representing the number of days mental health was not good in the past 30 days
+     + PhysHlth: a numerical numerical feature representing the number of days physical health was not good in the past 30 days
+     + DiffWalk: a categorical indicates if the individual has serious difficulty walking or climbing stairs (1 = Yes, 0 = No)
+     + Sex: a categorical feature that indicates the gender of an individual (1 = Male, 0 = Female)
+     + Age: a categorical feature representing the age category of the individual (1 = 18–24, 2 = 25–29, 3 = 30–34, 4 = 35–39, 5 = 40–44, 6 = 45–49, 7 = 50–54, 8 = 55–59, 9 =            60–64, 10 = 65–69, 11 = 70–74, 12 = 75–79, 13 = 80 or older)
+     + Education: a categorical variable that indicates Education level of the individual (1 = Never attended school or only kindergarten, 2 = Grades 1 through 8 (Elementary), 3 =        Grades 9 through 11 (Some high school, no diploma), 4 = Grade 12 or GED (High school graduate), 5 = College 1 to 3 years (Some college or technical school), 6 = College 4        years or more (College graduate) )
+     + Income: a categorical variable that indicates Income category of the individual ( 1 = Less than $10,000, 2 =  $10,000 to $14,999, 3 = $15,000 to $19,999, 4 = $20,000 to           $24,999, 5 = $25,000 to $34,999, 6 = $35,000 to $49,999, 7 = $50,000 to $74,999, 8 = $75,000 or more)
+
+\
+
+## 3. Distribution of Individual Features
+
+\
+To prepare the dataset for our analysis purpose, we utilized the sample function to create some missingness in our dataset. We randomly replaced 5% of all feature variables with missing values to make the dataset represent real world data which is often observed with missing values in variables.  It is important to point out that since this is an already cleaned dataset, there are not much to be done in addressing issues like unlikely values ( extreme height or weight, etc, non standard response to questionnaires among others). We will utilize exploratory data analysis to uncover patterns and relationships in the dataset. Feature engineering will be applied where applicable to create new variables and a visual representation of the data will be provided to identify trends and feature variable distributions. Additionally, sub group visualizations will be presented that enlightens our understanding of how diabetes affects certain groups of people and which feature variables are associated with diabetes. 
+
+* **Individual analytic tasks** -
+The following feature variables comprise of some of the risk factors that are reported to be associated with diabetes that will be studied.
+  + BMI: BMI histogram showed positively skewed data while a box plot also showed outliers. The outliers were removed from the dataset that were 1.5 times lower or higher than the     first and third quartiles. The plot of the data without the outliers showed a smoother distribution.
+    BMI was re-categorized into Underweight, Normal, Overweight and Obese. Over 70% of the sample were either overweight or obese to help identify at risk populations and easier interpretation of the data and for trend identification. It was apparent that most of the participants where either over weight or obese.
+
+```{r cleandata, results='hide'}
+# get data into R
+#setwd("~")
+#getwd()
+
+library(dplyr)
+#ddat <- read.csv("/Users/mkatuahene/Desktop/WCU/R-Machine Learning/Assignment/Week 2/diabetes_binary_health_indicators_BRFSS2015.csv", skip=0)
+ddat <- read.csv("https://matuahene.github.io/STA552/Week%202/diabetes_binary_health_indicators_BRFSS2015.csv", skip=0)
+
+#getwd()
+# Categorize income variable
+ddat$Income_cat <- cut(ddat$Income, 
+                                    breaks = c(-Inf, 3, 5, 6, Inf), 
+                                    labels = c("Low", "Medium", "High", "Very High"))
+
+#table(ddat$Income , ddat$Income_cat )
+
+ddat2 <-ddat
+#colSums(is.na(ddat2))
+
+
+# assign meaningful labels to Age
+ddat2$Age <- factor(ddat2$Age, 
+  levels = 1:13, 
+  labels = c("18-24 yrs", "25-29 yrs", "30-34 yrs", "35-39 yrs", "40-44 yrs", 
+             "45-49 yrs", "50-54 yrs", "55-59 yrs", "60-64 yrs", "65-69 yrs", 
+             "70-74 yrs", "75-79 yrs", "80+ yrs"))
+
+
+
+# BMI categories
+ddat2 <- ddat2 %>%
+  mutate(BMI_Cat = cut(BMI, 
+                            breaks = c(0, 18.5, 24.9, 29.9, Inf), 
+                            labels = c("Underweight", "Normal", "Overweight", "Obese")))
+
+
+
+# YES/NO labels
+ddat2 <- ddat2 %>%
+  mutate(
+    HighChol = recode(HighChol, "0" = "No", "1" = "Yes"),
+    HighBP = recode(HighBP, "0" = "No", "1" = "Yes"),
+    Smoker = recode(Smoker, "0" = "No", "1" = "Yes"),
+    Stroke = recode(Stroke, "0" = "No", "1" = "Yes"),
+    HeartDiseaseorAttack = recode(HeartDiseaseorAttack, "0" = "No", "1" = "Yes"),
+    PhysActivity = recode(PhysActivity, "0" = "No", "1" = "Yes"),
+    Fruits = recode(Fruits, "0" = "No", "1" = "Yes"),
+    Veggies = recode(Veggies, "0" = "No", "1" = "Yes")
+  )
+
+
+#Diabetes status, Education and Income, etc labels
+ddat2 <- ddat2 %>%
+  mutate(
+    Education = recode(Education, 
+                       "1" = "No High School", 
+                       "2" = "Some High School", 
+                       "3" = "High School Graduate", 
+                       "4" = "Some College", 
+                       "5" = "College Graduate",
+                       "6" = "College 4 years or more (College graduate)"),
+    Income = recode(Income, 
+                    "1" = "<$10K", 
+                    "2" = "$10K-$15K", 
+                    "3" = "$15K-$25K", 
+                    "4" = "$25K-$35K", 
+                    "5" = "$35K-$50K", 
+                    "6" = "$50K-$75K", 
+                    "7" = ">$75K",
+                    .default = "Unknown"),
+   Sex = recode(Sex, 
+                  "1" = "Male", 
+                  "0" = "Female",
+                .default = "Unknown"),
+   CholCheck = recode(CholCheck,
+                      "1" = "Yes",
+                      "0" = "No" ),
+   
+   DiffWalk = recode(DiffWalk,
+                      "1" = "Yes",
+                      "0" = "No" ),
+  
+   AnyHealthcare = recode(AnyHealthcare,
+                      "1" = "Yes",
+                      "0" = "No" ),
+
+   NoDocbcCost = recode(NoDocbcCost,
+                      "1" = "Yes",
+                      "0" = "No" ),
+  HvyAlcoholConsump = recode(HvyAlcoholConsump,
+                      "1" = "Yes",
+                      "0" = "No" ),
+    Diabetes_binary = recode(Diabetes_binary, 
+                            "0" = "No Diabetes", 
+                            "1" = "Has Diabetes"),
+  
+  GenHlth = recode(GenHlth,
+                  "1" = "Excellent",
+                   "2" = "Very Good",
+                   "3" = "Good",
+                   "4" = "Fair",
+                   "5" = "Poor",
+                   .default = "Unknown")
+  )
+
+
+
+#table (ddat2$Income)
+#unique(ddat2$Income)
+
+# create some missing data points 
+# Define the percentage of missing values 
+missing_percentage <- 0.05
+
+# Get total number of rows
+total_rows <- nrow(ddat2)
+
+# Apply missing values to all variables
+ddat2 <- ddat2 %>%
+  mutate(across(everything(), ~ {
+    miss_id <- sample(1:total_rows, size = round(missing_percentage * total_rows), replace = FALSE)
+    .[miss_id] <- NA  # Assign NA to selected rows
+    .
+  }))
+
+
+
+
+# overall summary of variables
+library(summarytools)
+dfSummary(ddat2)
+
+#table(ddat2$Age)
+#table(ddat2$BMI_Cat)
+#summary (ddat2$BMI)
+```
+
+
+
+```{r BMI, results='hide'}
+# get data into R
+#BMI variable
+library(ggplot2)
+library(gridExtra)
+library(grid)
+bmi1 <- ggplot(ddat2, aes(x = BMI)) +
+  geom_histogram(binwidth = 2, fill = "steelblue", color = "black", alpha = 0.7) +
+  labs(title = "BMI Distribution", x = "BMI", y = "Count") +
+  theme_minimal()
+
+bmi2 <- ggplot(ddat2, aes(x = BMI)) +
+  geom_density(fill = "lightblue", alpha = 0.6) +
+  labs(title = "Density Plot of BMI", x = "BMI", y = "Density") +
+  theme_minimal()
+
+bmi3 <- ggplot(ddat2, aes(y = BMI)) +
+  geom_boxplot(fill = "tomato", alpha = 0.7, outlier.color = "red") +
+  labs(title = "Boxplot of BMI", y = "BMI") +
+  theme_minimal()
+
+grid.arrange(bmi1, bmi2, bmi3, ncol = 2, top = textGrob("Overview of BMI", gp = gpar(fontsize = 16, fontface = "bold"))) 
+
+#check skewness of BMI
+library(e1071)
+skewness(ddat2$BMI, na.rm=TRUE) 
+skewness(ddat2$BMI, na.rm=TRUE) 
+
+# remove BMI outliers
+Q1 <- quantile(ddat2$BMI, 0.25, na.rm = TRUE)
+Q3 <- quantile(ddat2$BMI, 0.75, na.rm = TRUE)
+IQR <- Q3 - Q1
+
+# Define acceptable range
+lower_bound <- Q1 - 1.5 * IQR
+upper_bound <- Q3 + 1.5 * IQR
+
+# Remove outliers
+ddat3 <- ddat2[ddat2$BMI >= lower_bound & ddat2$BMI <= upper_bound, ]
+
+
+
+#plot of BMI with outliers removed: ddat3 now contains data with no outliers
+bmi12 <- ggplot(ddat3, aes(x = BMI)) +
+  geom_histogram(binwidth = 2, fill = "steelblue", color = "black", alpha = 0.7) +
+  labs(title = "BMI Distribution", x = "BMI", y = "Count") +
+  theme_minimal()
+
+bmi22 <- ggplot(ddat3, aes(x = BMI)) +
+  geom_density(fill = "lightblue", alpha = 0.6) +
+  labs(title = "Density Plot of BMI", x = "BMI", y = "Density") +
+  theme_minimal()
+
+bmi32 <- ggplot(ddat3, aes(y = BMI)) +
+  geom_boxplot(fill = "tomato", alpha = 0.7, outlier.color = "red") +
+  labs(title = "Boxplot of BMI", y = "BMI") +
+  theme_minimal()
+
+grid.arrange(bmi12, bmi22, bmi32, ncol = 2, top = textGrob("Overview of BMI with no outliers", gp = gpar(fontsize = 16, fontface = "bold"))) 
+
+
+#categorized BMI bar chart
+bmigrp<- ggplot(ddat3 %>% filter(!is.na(BMI_Cat)), aes(x = BMI_Cat)) +
+  geom_bar(fill = "lightblue" , width = 0.6) +
+  labs(title = "BMI Categories Distribution",
+       x = "BMI category",
+       y = "Count"
+       ) +
+  theme_classic() +
+  theme(plot.margin = margin(2, 2, 2, 2) )
+  
+bmigrp
+```
+
+  + Diabetes Status: In the sample, majority of the participants did not have diabetes(86%). Only a smaller proportion where diabetic or had pre-diabetes. This suggests low prevalence of diabetes in our sample. 
+  + Mental Health: Histogram and density plots showed few people had few days with poor mental health the last 30 days (mean = approximately 3 days of bad mental health days).
+    Outliers were replaced with mean values.
+  + Physical Health in last 30 days distribution showed outliers and these values were replaced with the mean.
+  + General Health Status: Most people reported very good or good health status overall with skewness observed towards poor health. 
+    and so no special changes will be applied to the variable. 
+  + Income variable was negatively skewed. Most participants earned higher income. The variable is categorized into Low, Medium, and High income levels.
+  + Sex: More females participated in the sample data than males. 
+  + Age: Distribution of age was such that majority of participants were beyond 40 years old. This suggests that most participants were older and age should     controlled for in any analysis.
+  + Education: Most of the participants had a high school diploma or higher (over 80%). 
+  + High blood Pressure and High Cholesterol: More participants did not have high blood pressure and more did not have any cholesterol checks in the last 5 years. 
+  + Smoker: About 44% of the participants smoked at least 100 cigarettes in their entire lifetime. Considering how smoking affects our health and with such many in     sample, controlling for this variable in our analysis and exploring how this variable interacts with others to impact diabetes will be studied.
+  + Heavy Alcohol consumption - both men and women reported they are not heavy drinkers but these could be incorrect representation due to the fact that they may report as not heavy drinkers for socially desirable responses and expectations. The analysis can be conducted for men and women separately and for those who reported as heavy drinkers to uncover hidden relations. 
+  + Heart disease/attack was not prevalent in our sample. But we know that diabetes impacts the heart function, it will be interesting to see if those who had diabetes reported to ave had any of these conditions. 
+  + Stroke: Most people had never been told they had diabetes (95%). 
+  + Other variables: Most people did not have difficulty walking up the stairs, were physically active in the past 30 days, had some form of health insurance and could see a doctor when needed, consumed vegetables once or more times a day, but slightly more did not consume fruits at the same rate as vegetables.
+
+```{r MenH, results='hide'}
+# Diabetes Status
+ggplot(ddat3 %>% filter(!is.na(Diabetes_binary)), aes(x = factor(Diabetes_binary))) +
+  geom_bar(fill = "lightblue" , width = 0.4) +
+  labs(title = "Diabetes Status",
+       x = "Diabetes Status",
+       y = "Count"
+       ) +
+  theme_classic()+
+  theme(plot.margin = margin(2, 2, 2, 2) )
+
+#Percentages within diabetes
+Diab.percentages <- ddat3 %>%
+  count(Diabetes_binary) %>%
+  mutate(Percentage = n / sum(n) * 100)
+Diab.percentages
+
+#Mental Health Variables
+summary(ddat3$MentHlth)
+menh1 <- ggplot(ddat2, aes(x = MentHlth)) +
+  geom_density(fill = "yellow", alpha = 0.6) +
+  labs(title = "Density Plot of not good mental health days", x = "Mental Health", y = "Density") +
+  theme_minimal()
+
+
+menh2  <- ggplot(ddat3, aes(x = MentHlth)) +
+  geom_histogram(binwidth = 2, fill = "yellow", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of not good mental health days", x = "Days", y = "Count") +
+  theme_minimal()
+
+
+menh3 <- ggplot(ddat3, aes(y = MentHlth)) +
+  geom_boxplot(fill = "yellow", alpha = 0.7, outlier.color = "red") +
+  labs(title = "Boxplot of Number of days Mental health was not good", y = "Mental Health Days") +
+  theme_minimal()
+
+
+grid.arrange(menh1, menh2, menh3, ncol = 2, top = textGrob("Overview of Mental Health in Past 30 Days", gp = gpar(fontsize = 16, fontface = "bold"))) 
+
+# Define a function to replace outliers with the mean
+replace_outliers_with_mean <- function(x) {
+  Q1 <- quantile(x, 0.25, na.rm = TRUE)
+  Q3 <- quantile(x, 0.75, na.rm = TRUE)
+  IQR <- Q3 - Q1
+  
+  # Define lower and upper bounds
+  lower_bound <- Q1 - 1.5 * IQR
+  upper_bound <- Q3 + 1.5 * IQR
+  
+  # Replace outliers with the mean
+  x[x < lower_bound | x > upper_bound] <- mean(x, na.rm = TRUE)
+  
+  return(x)
+}
+
+# Apply the function to mental health to replace outliers with mean value
+ddat3$MentHlth <- replace_outliers_with_mean(ddat3$MentHlth)
+
+#Physical Health histogram
+Ph  <- ggplot(ddat3, aes(x = PhysHlth)) +
+  geom_histogram(binwidth = 2, fill = "steelblue", color = "black", alpha = 0.7) +
+  labs(title = "Physical Health Days", x = "Days", y = "Count") +
+  theme_minimal()
+#Ph
+
+# Apply the function to mental health to replace outliers with mean value
+ddat3$PhysHlth <- replace_outliers_with_mean(ddat3$PhysHlth)
+
+#categorized General Health bar chart
+ddat3 <- ddat3 %>%
+  mutate(GenHlth = factor(GenHlth, 
+                          levels = c("Poor", "Fair", "Good", "Very Good", "Excellent"), 
+                          ordered = TRUE))  
+Gh <- ggplot(ddat3 %>% filter(!is.na(GenHlth)), aes(x = GenHlth)) +
+  geom_bar(fill = "blue", width =0.4) +
+  labs(title = "General Health Status",
+       x = "General Health",
+       y = "Count"
+       ) +
+  scale_x_discrete(expand = c(0.1, 0.1))+
+  theme_classic()
+Gh
+
+
+#categorized Sex chart
+Sex <- ggplot(ddat3 %>% filter(!is.na(Sex)), aes(x = Sex)) +
+  geom_bar(fill = "blue") +
+  labs(title = "Gender",
+       x = "Gender",
+       y = "Count"
+       ) +
+  theme_classic()
+#Sex
+unique(ddat3$Sex);
+
+# Age Groups
+Age <- ggplot(ddat2 %>% filter(!is.na(Age)), aes(x = Age)) +
+  geom_bar(fill = "blue") +
+  labs(title = "Age group Bar Chart",
+       x = "Age Group",
+       y = "Count"
+       ) +
+  theme_classic()
+#Age
+
+Age.percentages <- ddat %>%
+  count(Age) %>%
+  mutate(Percentage = n / sum(n) * 100)
+Age.percentages
+
+# Education
+Edu.percentages <- ddat %>%
+  count(Education) %>%
+  mutate(Percentage = n / sum(n) * 100)
+Edu.percentages
+
+# Smoker
+Smoke.percentages <- ddat %>%
+  count(Smoker) %>%
+  mutate(Percentage = n / sum(n) * 100)
+Smoke.percentages
+
+# Stroke
+Stroke.percentages <- ddat %>%
+  count(Stroke) %>%
+  mutate(Percentage = n / sum(n) * 100)
+Stroke.percentages
+
+```
+
+
+\
+
+## 4. Relationship between Features - Bivariate
+
+\
+We will now explore and have visualizations of relationships among several variables in our sample data. We will be looking at visuals for two or more numerical feature variables, categorical variables and visuals that look combinations of these to aid in our understanding of the data and how it influences our understanding of how to approach analysis of the data. 
+
+  + Diabetes and BMI plots : The box plot showing the diabetes and BMI plot shows the median BMI in the diabetic group is higher suggests relationship between 
+    these 2 variables. Additionally, the density plot shows higher BMI in the diabetic group than the non-diabetic group.
+  + Diabetes and Physical Activity plot: The bivariate plot shows that while the distribution of physical activity in the past 30 days is similar, far less        
+    diabetic people were physically active in the last 30 days.
+
+
+
+
+```{r twovar, results='hide'}
+########## two variable relationships
+
+# diabetes and BMI
+ 
+ggplot(ddat3%>% filter(!is.na(Diabetes_binary)), aes(x = factor(Diabetes_binary), y = BMI, fill = factor(Diabetes_binary))) +
+  geom_boxplot() +
+  labs(title = "BMI Distribution by Diabetes Status",
+       x = "Diabetes Status",
+       y = "BMI") +
+  scale_fill_manual(values = c("red", "green")) +
+  theme_classic()+
+  theme(legend.title = element_blank())
+
+ggplot(ddat3%>% filter(!is.na(Diabetes_binary)), aes(x = BMI, fill = factor(Diabetes_binary))) +
+  geom_density(alpha = 0.5) +
+  labs(title = "BMI Density Plot by Diabetes Status",
+       x = "BMI",
+       y = "Density") +
+  scale_fill_manual(values = c("red", "green")) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
+
+
+
+#diabetes and physical health
+
+ggplot(ddat3%>% filter(!is.na(Diabetes_binary) & !is.na(PhysActivity)), aes(x = factor(Diabetes_binary), fill = factor(PhysActivity))) +
+  geom_bar(position = "dodge") +
+  labs(title = "Grouped Bar Plot of Diabetes Status and Physical Activity in pas 30 days",
+       x = "Diabetes Status",
+       y = "Count") +
+  scale_fill_manual(values = c("blue", "red", "green")) +
+  guides(fill = guide_legend(title = "Pysically Active last 30 days")) +
+  theme_classic()
+  
+
+#colnames(ddat3)
+
+```
+
+
+
+```{r multivar}
+#correlation plot of numerical variables
+library(ggcorrplot)
+select_vars <- c("PhysHlth", "MentHlth", "GenHlth", "BMI")
+corr_matrix <- cor(ddat %>% select(all_of(select_vars)), use = "complete.obs")
+
+library(ggplot2)
+library(reshape2)
+
+# Convert matrix to long format
+corr_melt <- melt(corr_matrix)
+
+# Plot heatmap
+# Plot with text labels
+cor1 <- ggplot(corr_melt, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  geom_text(aes(label = round(value, 2)), color = "black", size = 4) +  # Add values
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  theme_minimal() +
+  labs(title = "Correlation Heatmap", fill = "Correlation") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#install.packages("corrplot")
+library(corrplot)
+
+corrplot(corr_matrix, method = "color", type = "upper",
+         col = colorRampPalette(c("blue", "white", "red"))(200),
+         tl.cex = 0.7, tl.col = "black",
+         addCoef.col = "black", number.cex = 0.8)  # Add values
+
+
+#install.packages("plotly")
+library(ggplot2)
+library(plotly)
+unique(ddat3$Income_cat)
+mycolors <- c("Low" = "red", "Medium" = "orange", "High" = "green", "Very High" = "blue")
+
+ggplotly_density <- ddat3%>% filter(!is.na(Income_cat) & !is.na(Diabetes_binary))  %>% 
+  ggplot(aes(x = BMI, color = Income_cat, fill = Income_cat)) +
+  geom_density(linewidth = 0.75, alpha = 0.6) +
+  xlab("BMI Index") + 
+  labs(color = "Income Groups", fill = "Income Groups") +
+  ggtitle("Density Curve of BMI across Income Groups") +
+  scale_color_manual(values = mycolors) +  # Custom line colors
+  scale_fill_manual(values = mycolors) +  # Custom fill colors
+           theme(plot.margin = unit(c(2,1,2,1), "cm"),
+                plot.title = element_text(hjust = 0.5))  + 
+  facet_wrap(~ Diabetes_binary)  # Split by diabetes status
+
+ggplotly(ggplotly_density)
+
+
+
+mycolors.n <- c("Poor" = "red", "Fair" = "orange", "Good" = "green", "Very Good" = "blue", "Excellent" = "lightblue")
+ggplotly_density.n <- ddat3%>% filter(!is.na(GenHlth) & !is.na(Diabetes_binary))  %>% 
+  ggplot(aes(x = BMI, color = GenHlth, fill = GenHlth)) +
+  geom_density(linewidth = 0.75, alpha = 0.6) +
+  xlab("BMI Index") + 
+  labs(color = "General Health", fill = "General Health") +
+  ggtitle("Density Curve of BMI across General Health") +
+  scale_color_manual(values = mycolors.n) +  # Custom line colors
+  scale_fill_manual(values = mycolors.n) +  # Custom fill colors
+           theme(plot.margin = unit(c(2,1,2,1), "cm"),
+                plot.title = element_text(hjust = 0.5))  + 
+  facet_wrap(~ Diabetes_binary)  # Split by diabetes status
+
+ggplotly(ggplotly_density.n)
+
+
+
+```
+
+
+\
+
+## 5. Relationship between Features - Mutlivariate 
+
+\
+The density plot of BMI and Income groups shows that BMI is highest in more participants in the low and medium income groups. And participants in the very high income group are among those with BMI less than 30 or healthier. When the plot is split by diabetes status, we observed similar distribution but we see that variance in the income groups is not as distinct for high and very high groups. While higher BMI is comon in all diabetics, it is more common in the Low and Medium income groups and indicates some variability in the the diabetic group. Similar patterns were observed among general health status with those in the poor health status also with higher BMI both in the diabetic and non-diabetic groups. The shift in peaks in both density plots suggests associations between diabetes and BMI which differs among different income and health groups. 
+
+
