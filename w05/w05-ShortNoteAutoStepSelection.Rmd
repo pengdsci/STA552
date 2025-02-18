@@ -1,0 +1,262 @@
+---
+title: 'A Short Note of Stepwise Variable Selection'
+author: "Cheng Peng"
+date: " West Chester University"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    toc-title: Table of Contents
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    toc-title: Contents
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 24px;
+  font-weight: bold;
+  color: navy;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-family: system-ui;
+  font-weight: bold;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 16px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 14px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+
+knitr::opts_chunk$set(echo = TRUE,       # include code chunk in the output file
+                      warning = FALSE,   # sometimes, you code may produce warning messages,
+                                         # you can choose to include the warning messages in
+                                         # the output file. 
+                      results = TRUE,    # you can also decide whether to include the output
+                                         # in the output file.
+                      message = FALSE,
+                      comment = NA)  
+```
+
+
+\
+
+# Introduction
+
+Stepwise variable selection is a common technique for automatically selecting the most relevant predictors in linear and logistic regression models. In R, the step() function from the base stats package is commonly used for this purpose. Below are examples of how to use stepwise selection in both linear and logistic regression models.
+
+
+# Stepwise Selection in Linear Regression
+
+Stepwise selection can be performed in three ways:
+
+* Forward selection: Starts with no predictors and adds them one by one.
+* Backward elimination: Starts with all predictors and removes them one by one.
+* Both (hybrid): Combines forward and backward steps.
+
+Example: Linear Regression with Stepwise Selection
+
+```{r}
+# Load necessary library
+library(MASS)
+
+# Fit a full linear regression model with all predictors
+full_model <- lm(mpg ~ ., data = mtcars)
+
+# Perform stepwise selection (default is backward elimination)
+step_model <- step(full_model, direction = "both")
+
+# Summarize the final model
+summary(step_model)
+```
+
+**Explanation**
+
+* direction = "both": Performs both forward and backward steps.
+* direction = "forward": Performs forward selection.
+* direction = "backward": Performs backward elimination (default).
+
+
+#  Stepwise Selection in Logistic Regression
+
+For logistic regression, the process is similar, but the model is fitted using glm() with the family = binomial argument.
+
+Example: Logistic Regression with Stepwise Selection
+
+```{r}
+# Load necessary library
+library(MASS)
+
+# Fit a full logistic regression model with all predictors
+full_model <- glm(am ~ ., data = mtcars, family = binomial)
+
+# Perform stepwise selection (default is backward elimination)
+step_model <- step(full_model, direction = "both")
+
+# Summarize the final model
+summary(step_model)
+```
+
+**Explanation**
+
+The step() function works similarly for logistic regression as it does for linear regression.
+
+The family = binomial argument specifies that the response variable is binary (e.g., 0/1).
+
+# Customizing Stepwise Selection
+
+You can customize the stepwise selection process by specifying the scope of the models (minimum and maximum models) and the criterion for selection (e.g., AIC, BIC).
+
+Example: Customizing Stepwise Selection
+
+```{r}
+# Define the minimum (null) and maximum (full) models
+null_model <- lm(mpg ~ 1, data = mtcars)  # Model with only the intercept
+full_model <- lm(mpg ~ ., data = mtcars)  # Model with all predictors
+
+# Perform stepwise selection with custom scope and AIC criterion
+step_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "both", trace = 0)
+
+# Summarize the final model
+summary(step_model)
+```
+
+**Explanation**
+
+* scope: Defines the range of models to consider (from the simplest to the most complex).
+* trace = 0: Suppresses detailed output during the stepwise process.
+
+The selection criterion is AIC by default, but you can use BIC by specifying k = log(n) in the step() function, where n is the number of observations.
+
+# Stepwise Selection with BIC
+
+If you prefer to use BIC (Bayesian Information Criterion) instead of AIC, you can modify the step() function as follows:
+
+Example: Stepwise Selection with BIC
+
+```{r}
+# Perform stepwise selection with BIC
+step_model <- step(full_model, direction = "both", k = log(nrow(mtcars)))
+
+# Summarize the final model
+summary(step_model)
+```
+
+**Explanation**
+
+k = log(nrow(mtcars)): Adjusts the penalty term to use BIC instead of AIC.
+
+
+# Stepwise Selection for Logistic Regression with BIC
+
+Similarly, you can use BIC for logistic regression:
+
+Example: Logistic Regression with BIC
+
+```{r}
+# Fit a full logistic regression model
+full_model <- glm(am ~ ., data = mtcars, family = binomial)
+
+# Perform stepwise selection with BIC
+step_model <- step(full_model, direction = "both", k = log(nrow(mtcars)))
+
+# Summarize the final model
+summary(step_model)
+```
+
+# Summary
+
+Use the `step()` function for stepwise variable selection in both linear and logistic regression.
+
+Specify direction = "both", "forward", or "backward" to control the selection process.
+
+Customize the scope and selection criterion (AIC or BIC) as needed.
+
+Stepwise selection is a simple and effective way to automate variable selection, but it has limitations (e.g., it may not always find the globally optimal model).
+
+
+
+
+
+
+
