@@ -186,7 +186,7 @@ option:focus {
           <div class="container-fluid">
 
             <button type="button" id="sidebarCollapse" class="btn btn-primary">
-              <i class="fa fa-bars"><b>&nbsp;  Module 06</b></i>
+              <i class="fa fa-bars"><b>&nbsp;  Module 08</b></i>
               <span class="sr-only">Toggle Menu</span>
             </button>
       
@@ -274,7 +274,7 @@ option:focus {
   <!--div class="container sec"-->
             
   <center>
-      <font style="font-variant: small-Caps; font-family: Arial, sans-serif; font-size: 18px; font-weight:600; color:#660066; ">6. Landscape of Machine Learning</font>       
+      <font style="font-variant: small-Caps; font-family: Arial, sans-serif; font-size: 18px; font-weight:600; color:#660066; ">7. Support Vector Machine (SVM): Related Concepts and Forumation</font>       
             
             </center>          
     <br>
@@ -297,57 +297,63 @@ option:focus {
   <tr>
     <td> 
         <ul>
-            <li>What is Machine Learning</li>
+            <li>General Concepts and Objectives of SVM</li>
                 <ul>
-                     <li>Algorithm or Model</li>
-                     <li>Machine learning workflow</li>
-                     <li>Machine learning glossary</li>
+                     <li>Conceptual understanding of SVM</li>
+                     <li>Technical terms </li>
+                     <li>Formulation of linear SVM</li>
+                     <li></li>
                 </ul>
-            <li>Types of Machine Learning</li> 
+            <li>Kernel Trick - Non-linear SVM</li> 
                 <ul>
-                     <li>Supervised and unsupervised ML</li>
-                     <li>KGenerative and discriminative learning</li>
-                     <li>Components of machine learning </li>
+                     <li>Inner product in vector space</li>
+                     <li>Kernel function / transformation</li>
+                     <li>Special cae: nonlinear SVM in 2D feature space </li>
                  </ul>
-              <li>Statistical Machine Learning</li> 
+              <li>SVM Classification</li> 
                 <ul>
-                     <li>Scope and applications </li>
-                     <li>SML and modern applied statistics </li>
+                     <li>Data splitting: training, validation, and testing</li>
+                     <li>Methods of cross-validation </li>
+                     <li>K-fold cross validation</li>
                  </ul>
 
     <li><b>Class Notes</b></li> 
      <ul>
-         <li>Overview of Machine Learning Methods <a href="w06/w06-WhatIsMachineLearning.html" target="popup"  onclick="window.open('w06/w06-WhatIsMachineLearning.html', 'name','width=900,height=500')"><font color = "darkred"> [HTML] </font></a></li>
+         <li>Cross-validation for Regression Modeling <a href="w05/w05-CV4Reg.html" target="popup"  onclick="window.open('w05/w05-CV4Reg.html', 'name','width=900,height=500')"><font color = "darkred"> [HTML] </font></a></li>
+         <li>A Short Note on Stepwise Variable Selection <a href="w05/w05-ShortNoteAutoStepSelection.html" target="popup"  onclick="window.open('w05/w05-ShortNoteAutoStepSelection.html', 'name','width=900,height=500')"><font color = "darkred"> [HTML] </font></a></li> 
+          
     </ul>
    </ul>
     </td><td></td>
 
      <td><ul>          
-       
-            <li> Misperceptions of Data Science 
-                 <a href="w06/StatsDataScienceSynergy.html" target="popup" 
-             onclick="window.open('w06/StatsDataScienceSynergy.html', 'name','width=900,height=500')">[HTML]</a>
-             <a href="w06/StatsDataScienceSynergy.pdf" target="popup" 
-             onclick="window.open('w06/StatsDataScienceSynergy.pdf', 'name','width=900,height=500')">[PDF]</a>
-             </li>
-           <li>K-NN Classification and Regression</li>
+         <li>Bootstrap Resampling Methods</li>
          <ul>
-             <li> A Short k-NN Tutorial  
-                <a href="w06/knn_notes-wisconsin.pdf" target="popup" 
-             onclick="window.open('w06/knn_notes-wisconsin.pdf', 'name','width=900,height=500')">[PDF (first 5 sections)]</a></li>   
-             
-             <li> k-NN Survey (comprehensive but a bit technical) 
-                <a href="w06/nn_survey.pdf" target="popup" 
-             onclick="window.open('w06/nn_survey.pdf', 'name','width=900,height=500')">[PDF]</a></li>   
+            <li> Nonparametric Bootstrap Methods
+                 <a href="http://users.stat.umn.edu/~helwig/notes/npboot-notes.html" target="popup" 
+             onclick="window.open('http://users.stat.umn.edu/~helwig/notes/npboot-notes.html', 'name','width=900,height=500')">[HTML]</a></li>
+             <li> General Introduction to Bootstrap Method
+                <a href="w05/BootstrapMethods.pdf" target="popup" 
+             onclick="window.open('w05/BootstrapMethods.pdf', 'name','width=900,height=500')">[PDF]</a></li>   
            </ul>
         <li> ROC Analysis</li>
             <ul>
-             <li>  pROC library Help Document 
-             <a href="w06/pROC-HelpDocument.pdf" target="popup" 
-             onclick="window.open('w06/pROC-HelpDocument.pdf', 'name','width=900,height=500')">[PDF]</a></li>  
+             <li>  Intro to ROC Curve 
+             <a href="w05/IntroROC-paper.pdf" target="popup" 
+             onclick="window.open('w05/IntroROC-paper.pdf', 'name','width=900,height=500')">[PDF]</a></li>  
+            <li> Optimal ROC Cut-off Points  
+            <a href="w05/ROC-OptimalCutpoints.pdf" target="popup" 
+             onclick="window.open('w05/ROC-OptimalCutpoints.pdf', 'name','width=900,height=500')">[PDF]</a></li> 
          </ul>   
+
+         <li>Model selection via cross-validation : <a href="w05/CrossValidationModelSelection-AReview.pdf" target="popup" 
+                   onclick="window.open('w05/CrossValidationModelSelection-AReview.pdf', 'name','width=900,height=500')">
+                   <font color = "navy">[PDF]</font></a>
+                  </li>  
+         <li>Chapter 1 of <b>Regression Modeling Strategies </b> introduces some regression modeling logic and workflow <a href="https://hbiostat.org/rmsc/intro" target="popup" onclick="window.open('https://hbiostat.org/rmsc/intro','name','width=900,height=500')"><font color = "darkred"> [HTML-Book Chapter] </font></a></li>
          
-        <li><font color = "blue"><b>Finalizing Comprehensive Report of Project #1</b></font><font color = "red"></font></li>
+         
+        <li><font color = "blue"><b>Comprehensive Report of Project #1</b></font><font color = "red"></font></li>
          <ul>
              <li>Guidelines<a href="w05/w05-Project-01-guidelines.html" target="popup" onclick="window.open('w05/w05-Project-01-guidelines.html','name','width=900,height=500')"><font color = "darkred"> [HTML] </font></a></li>
              <li><font color = "red"><b>Due: Wednesday, 3/5/25</b></font></li>
