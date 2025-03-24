@@ -1,0 +1,182 @@
+---
+title: 'Guidelines for Project #2'
+author: "Part II: SVM - Classification and Regression"
+date: "STA 522: Applied Statistical Machine Learning"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 18px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 16px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 12px;
+    font-family: "Gill Sans", sans-serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   
+                      warning = FALSE,
+                      results = TRUE, 
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+\
+
+
+
+**Objective**
+
+Using the same dataset and addressing the same research questions from Project Part I, extend your analysis by implementing Support Vector Machines (SVM) for both classification and regression tasks. Compare these models with the regularized linear/logistic regression approaches from Part I, and prepare a formal report summarizing your findings.
+
+**Tasks**
+
+* *Model Implementation* - SVM Classification & Regression:
+  + Apply SVM models (with linear and RBF kernels) to the same questions explored in Part I.
+  + For regression, compare SVM (linear/RBF) with regularized linear regression (e.g., Ridge/Lasso).
+  + For classification, compare SVM (linear/RBF) with regularized logistic regression.
+  + Use consistent evaluation metrics (e.g., MSE, MAE for regression; accuracy, ROC-AUC for classification).
+
+* **Model Comparisons**
+  + Regression:
+    - Compare SVM regression (linear/RBF) with regularized linear regression.
+    - Pay close attention to MSE and MAE scales when assessing performance.
+  + Classification:
+    - Compare SVM classification (linear/RBF) with regularized logistic regression.
+    - Include metrics like precision, recall, and ROC curves for a robust evaluation.
+
+**(Optional) Stepwise Model Comparison**
+
+* Fit OLS linear regression and logistic regression using stepwise variable selection.
+* Compare these models with:
+  + The corresponding SVM models (linear/RBF).
+  + The regularized regression models from Part I.
+
+**Report Guidelines**
+
+* Structure your report as a formal catalytic summary with:
+  + Clear methodology descriptions.
+  + Visualizations (e.g., ROC curves, residual plots, coefficient comparisons).
+  + Interpretation of results, emphasizing why one model may outperform another.
+
+* Use tables/figures to highlight key comparisons (e.g., MSE/MAE tables, confusion matrices).
+
+
+**Key Notes**
+
+* **Reproducibility**: Ensure code and data are well-documented.
+* **Visuals**: Prioritize plots that reveal model behavior (e.g., decision boundaries for SVM, regularization paths for linear models).
+* **Conclusion**: Summarize which models performed best and under what conditions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
