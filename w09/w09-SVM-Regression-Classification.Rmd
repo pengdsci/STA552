@@ -3,18 +3,6 @@ title: 'SVM Regression and Classification By Examples'
 author: "Cheng Peng"
 date: "West Chester University"
 output:
-  pdf_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    number_sections: no
-    fig_width: 3
-    fig_height: 3
-  word_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    keep_md: yes
   html_document: 
     toc: yes
     toc_depth: 4
@@ -25,6 +13,18 @@ output:
     code_download: yes
     smooth_scroll: yes
     theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
 editor_options: 
   chunk_output_type: inline
 ---
@@ -844,7 +844,7 @@ tune.lin <- tune(svm, train.x = X.train, train.y = y.train,
 # Train the final model using the best parameters
 final.lin<- svm(X.train, y.train, 
                    type = "eps-regression",  # Use "nu-regression" for nu-SVR
-                   kernel = "radial", 
+                   kernel = "linear", 
                    epsilon = tune.lin$best.parameters$epsilon, 
                    cost = tune.lin$best.parameters$cost)
 #####
@@ -905,7 +905,7 @@ row.names(Performance) <- c("MSE", "MAE")
 pander(Performance)
 ``` 
 
-The above predictive errors show that the linear support vector machine outperforms non-linear RBF-kernel-based SVR and the ordinary least square regression models.
+The above predictive errors show that the nonlinear support vector machine outperforms linear kernel based SVR and the ordinary least square regression models.
 
 
 
