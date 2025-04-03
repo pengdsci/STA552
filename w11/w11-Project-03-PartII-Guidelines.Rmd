@@ -1,0 +1,192 @@
+---
+title: 'Guidelines for Project #3'
+author: "Part II: Ensemble Tree Algorithms - Methods and Applications"
+date: "STA 522: Applied Statistical Machine Learning"
+output:
+  html_document: 
+    toc: no
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 18px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 16px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 12px;
+    font-family: "Gill Sans", sans-serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   
+                      warning = FALSE,
+                      results = TRUE, 
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+\
+
+
+
+**Objective**
+
+Select a **new dataset** that includes:
+
+* Both **numerical and categorical response variables**,
+* At least **10 feature variables** (response variables are not counted as features).
+
+Using this dataset, apply **Classification and Regression Trees (CART)** to address practical questions formulated based on the data.
+
+
+**Reporting Format**
+
+Follow the same format used in **Projects #1 and #2**.
+
+
+**Analytic Tasks**
+
+* **Common Analytic Tasks**
+  + Formulate analytic questions derived from meaningful practical questions.
+  + Assess whether the dataset contains the necessary information.
+  + Perform exploratory data analysis (EDA).
+  + Conduct necessary feature engineering.
+  + <i>Summarize existing methods (e.g., regression models, SVM, etc.) previously learned to address the formulated questions.</i>
+  
+
+* **CART-Specific Analytic Task** 
+  + CART Regression:
+    - Provide a brief overview of key components before implementation.
+    - Summarize results for each step: (a) Hyperparameter tuning; (b) Final model training; (c) Predictions on test data; (d) Performance evaluation using appropriate metrics.
+    - Include visual representations where applicable.
+  + CART Classification:
+    - Provide a concise explanation of major components before coding.
+    - Summarize results for each step:  (a) Hyperparameter tuning; (b) Final model training; (c) Predictions on test data; (d) Performance evaluation using appropriate metrics.
+    - **Implementation guidance**, including determining the optimal cut-off probability based on an appropriate performance measure (refer to class notes for details).
+  + Performance Comparison Across Models
+    - **Numerically compare** CART model performance with other models (fit the same training/testing data on alternative models).
+    - Use **tables or figures** to visually compare model performance.
+
+
+\
+
+<font color = "red">**Additional Analysis**</font>
+
+In addition to the analytical tasks outlined in Part I of Project #3, you are expected to integrate two ensemble methods—bagging and random forests—into the analysis and compare the performance of the candidate models using appropriate performance metrics.
+
+General Implementation Process:
+
+* **Hyperparameter tuning**: Identify the optimal combination of hyperparameters.
+
+* **Train the final model**: Fit the bagged trees or random forest model using the tuned hyperparameters.
+
+* **Prediction and performance evaluation**: Assess model performance on relevant data.
+
+* **Variable importance**: Analyze and interpret feature importance.
+
+* **Model comparison**: Compare the ensemble models with classical statistical models (using a table or figure for clarity).
+
+
+
+
+
+
+
+
+
+
+
