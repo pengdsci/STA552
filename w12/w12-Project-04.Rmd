@@ -1,0 +1,175 @@
+---
+title: 'Guidelines for Project #4'
+author: "Neural Networks for Regression and Classification"
+date: "An Optional Bonus Project"
+output:
+  html_document: 
+    toc: no
+    toc_depth: 4
+    toc_float: yes
+    number_sections: no
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 22px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-weight: bold;
+  font-family: system-ui;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 18px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 16px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 12px;
+    font-family: "Gill Sans", sans-serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   
+                      warning = FALSE,
+                      results = TRUE, 
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+\
+
+
+
+**Objective**
+
+Select a new dataset that meets the following criteria:
+
+* Includes both **numerical and categorical** response variables.
+
+* Contains at **least 10 feature variables** (response variables are not counted as features).
+
+Using this dataset, apply Neural Networks to address practical questions derived from the data.
+
+**Reporting Format**
+
+Follow the same format as previous projects completed this semester.
+
+**Analytic Tasks**
+
+* **Common Analytic Tasks**
+  + Formulate analytic questions based on meaningful practical problems.
+  + Assess whether the dataset contains the necessary information.
+  + Perform exploratory data analysis (EDA).
+  + Conduct necessary feature engineering.
+  + Summarize existing methods (e.g., regression models, SVM, CART, ensembles) that could address the formulated questions.
+
+* **Implementation of Neural Networks**
+  + Perceptron Regression
+  + Perceptron Classification
+  + Multilayer Neural Networks
+  + Implementation Process
+    - Feature encoding and scaling
+    - Two-way data splitting
+    - Hyperparameter tuning
+    - Final model training
+    - Prediction and performance evaluation
+    - Comparisons with base models
+    - Recommendations
+
+<font color = "red">**Due: Wednesday, 5/7/2025**</font>
+
+
+
+
+
+
+
+
+
+
+
+
+
