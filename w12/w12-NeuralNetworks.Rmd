@@ -3,6 +3,18 @@ title: 'Perceptron Algorithms for Classification and Regression'
 author: "Cheng Peng"
 date: "West Chester University"
 output:
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
   html_document: 
     toc: yes
     toc_depth: 4
@@ -13,18 +25,6 @@ output:
     code_download: yes
     smooth_scroll: yes
     theme: lumen
-  word_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    keep_md: yes
-  pdf_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    number_sections: yes
-    fig_width: 3
-    fig_height: 3
 editor_options: 
   chunk_output_type: inline
 ---
@@ -347,7 +347,9 @@ The resulting **gradient Updates** (if misclassified):
 $$
 \frac{\partial {L}}{\partial \mathbf{w}} = -y_{\text{true}} \mathbf{x}, \quad \frac{\partial {L}}{\partial b} = -y_{\text{true}}
 $$
+
  and 
+ 
 $$
 \mathbf{w} \leftarrow \mathbf{w} + \eta y_{\text{true}} \mathbf{x}, \quad b \leftarrow b + \eta y_{\text{true}}
 $$
