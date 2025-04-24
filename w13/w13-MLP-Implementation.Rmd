@@ -7,6 +7,7 @@ output:
     toc: yes
     toc_depth: 4
     toc_float: yes
+    df_print: paged 
     number_sections: yes
     toc_collapsed: yes
     code_folding: hide
@@ -770,8 +771,15 @@ final.reg.model <- neuralnet(
 )
 
 # Plot the neural network
-plot(final.reg.model)
+#plot(final.reg.model)
 ```
+
+
+
+```{r echo = FALSE, fig.align='center', out.width="90%"}
+include_graphics("img/single-hidden-MLP-Housing.png")
+```
+
 
 The above NN plot shows the architecture of the final one-hidden-layer perceptron model. Next, we will use it to make predictions.
 
@@ -782,7 +790,7 @@ pred.NN1 <- predict(final.reg.model, test.reg.data[, -ncol(test.reg.data)])
 # Calculate performance metrics
 rmse.NN1 <- sqrt(mean((pred.NN1  - test.reg.data$medv)^2))
 mae.NN1 <- mean(abs(pred.NN1  - test.reg.data$medv))
-r_squared.NN1 <- cor(pred.NN1 , test.reg.data$medv)^2
+r.squared.NN1 <- cor(pred.NN1 , test.reg.data$medv)^2
 
 # cat("Performance Metrics:\n")
 # cat("RMSE:", rmse, "\n")
@@ -799,7 +807,7 @@ ggplot(plot.NN1.data, aes(x = Actual, y = Predicted)) +
   geom_point() +
   geom_abline(intercept = 0, slope = 1, color = "darkred") +
   annotate("text", x=0.85, y=.2, 
-           label=paste("R.sq =", round(r_squared.NN1,4)), color="blue") +
+           label=paste("R.sq =", round(r.squared.NN1,4)), color="blue") +
   annotate("text", x=0.85, y=.13, 
            label=paste("RMSE =", round(rmse.NN1,4)), color="blue") +
   annotate("text", x=0.85, y=.06, 
@@ -815,26 +823,26 @@ The figure above demonstrates a strong correlation between the predicted target 
 ```{r}
 # library(ggplot2)
 # Train linear regression model
-lm_model <- lm(medv ~ ., data = test.reg.data)
+lm.model <- lm(medv ~ ., data = test.reg.data)
 
 # Make predictions
-lm_predictions <- predict(lm_model, test.reg.data[, -ncol(test.reg.data)])
+lm.predictions <- predict(lm.model, test.reg.data[, -ncol(test.reg.data)])
 
 # Calculate performance metrics
-lm_rmse <- sqrt(mean((lm_predictions - test.reg.data$medv)^2))
-lm_mae <- mean(abs(lm_predictions - test.reg.data$medv))
-lm_r_squared <- cor(lm_predictions, test.reg.data$medv)^2
+lm.rmse <- sqrt(mean((lm.predictions - test.reg.data$medv)^2))
+lm.mae <- mean(abs(lm.predictions - test.reg.data$medv))
+lm.r.squared <- cor(lm.predictions, test.reg.data$medv)^2
 
 
 ## improvements
-RMSE.imp <- round((lm_rmse - rmse.NN1)/lm_rmse * 100,2)
-MAE.imp <- round((lm_mae - mae.NN1)/lm_mae * 100, 2)
-Rsq.imp <- round((r_squared.NN1 - lm_r_squared)/lm_r_squared * 100,2)
+RMSE.imp <- round((lm.rmse - rmse.NN1)/lm.rmse * 100,2)
+MAE.imp <- round((lm.mae - mae.NN1)/lm.mae * 100, 2)
+Rsq.imp <- round((r.squared.NN1 - lm.r.squared)/lm.r.squared * 100,2)
 
 ##
 Performance.table <- data.frame(
-  LM = c(lm_rmse, lm_mae, lm_r_squared),
-  NN.1 = c(rmse.NN1, mae.NN1, r_squared.NN1),
+  LM = c(lm.rmse, lm.mae, lm.r.squared),
+  NN.1 = c(rmse.NN1, mae.NN1, r.squared.NN1),
   Improvement.percentage = c(RMSE.imp, MAE.imp, Rsq.imp)
 )
 rownames(Performance.table) <- c("RMSE", "MAE", "R.square")
@@ -847,7 +855,7 @@ pander(Performance.table)
 comparison.data <- data.frame(
   Actual = test.reg.data$medv,
   MLP = pred.NN1,
-  Linear = lm_predictions
+  Linear = lm.predictions
 )
 
 ggplot(comparison.data) +
@@ -965,8 +973,14 @@ final.model.NN2 <- neuralnet(
 )
 
 # Plot the neural network
-plot(final.model.NN2)
+#plot(final.model.NN2)
 ```
+
+```{r echo = FALSE, fig.align='center', out.width="90%"}
+include_graphics("img/two-hidden-MLP-Housing.png")
+```
+
+
 
 
 ```{r}
@@ -976,10 +990,10 @@ pred.NN2 <- predict(final.model.NN2, test.reg.data[, -ncol(test.reg.data)])
 # Calculate performance metrics
 rmse.NN2 <- sqrt(mean((pred.NN2  - test.reg.data$medv)^2))
 mae.NN2 <- mean(abs(pred.NN2  - test.reg.data$medv))
-r_squared.NN2 <- cor(pred.NN2 , test.reg.data$medv)^2
+r.squared.NN2 <- cor(pred.NN2 , test.reg.data$medv)^2
 
 ## vector of error metric
-NN2 <- c(rmse.NN2, mae.NN2, r_squared.NN2)
+NN2 <- c(rmse.NN2, mae.NN2, r.squared.NN2)
 
 # Plot predictions vs actual
 plot.data.NN2 <- data.frame(
@@ -1000,27 +1014,27 @@ ggplot(plot.data.NN2, aes(x = Actual, y = Predicted)) +
 
 ```{r}
 # Train linear regression model
-lm_model <- lm(medv ~ ., data = train.reg.data)
+lm.model <- lm(medv ~ ., data = train.reg.data)
 
 # Make predictions
-lm_predictions <- predict(lm_model, test.reg.data[, -ncol(test.reg.data)])
+lm.predictions <- predict(lm.model, test.reg.data[, -ncol(test.reg.data)])
 
 # Calculate performance metrics
-lm_rmse <- sqrt(mean((lm_predictions - test.reg.data$medv)^2))
-lm_mae <- mean(abs(lm_predictions - test.reg.data$medv))
-lm_r_squared <- cor(lm_predictions, test.reg.data$medv)^2
+lm.rmse <- sqrt(mean((lm.predictions - test.reg.data$medv)^2))
+lm.mae <- mean(abs(lm.predictions - test.reg.data$medv))
+lm.r.squared <- cor(lm.predictions, test.reg.data$medv)^2
 
 ###
-rmse.NN2.imp <- (lm_rmse - rmse.NN2)/lm_rmse*100
-mae.NN2.imp <- (lm_mae - mae.NN2)/lm_mae * 100
-Rsq.NN2.imp <- (r_squared.NN2 - lm_r_squared)/lm_r_squared * 100
+rmse.NN2.imp <- (lm.rmse - rmse.NN2)/lm.rmse*100
+mae.NN2.imp <- (lm.mae - mae.NN2)/lm.mae * 100
+Rsq.NN2.imp <- (r.squared.NN2 - lm.r.squared)/lm.r.squared * 100
 
 NN2.improve <-c(rmse.NN2.imp, mae.NN2.imp, Rsq.NN2.imp)
 
 perf.matrix <-data.frame(
-              LM = c(lm_rmse, lm_mae, lm_r_squared),
-              NN.1 = c(rmse.NN1, mae.NN1, r_squared.NN1),
-              NN.2 = c(rmse.NN2, mae.NN2, r_squared.NN2)
+              LM = c(lm.rmse, lm.mae, lm.r.squared),
+              NN.1 = c(rmse.NN1, mae.NN1, r.squared.NN1),
+              NN.2 = c(rmse.NN2, mae.NN2, r.squared.NN2)
          )
 
 perf.matrix$NN1.Improve <- round(100*(perf.matrix$LM-perf.matrix$NN.1)/perf.matrix$LM,2)
@@ -1038,7 +1052,7 @@ pander(perf.matrix)
 comparison.data.NN2 <- data.frame(
   Actual = test.reg.data$medv,
   MLP = pred.NN2 ,
-  Linear = lm_predictions
+  Linear = lm.predictions
 )
 
 ggplot(comparison.data.NN2) +
@@ -1200,8 +1214,13 @@ nn.1layer <- neuralnet(
   stepmax = 1e6
 )
 ##
-plot(nn.1layer, main = paste("One-hidden-layer with", best.1layer$hidden, "Nodes"))
+#plot(nn.1layer, main = paste("One-hidden-layer with", best.1layer$hidden, "Nodes"))
 ```
+
+```{r echo = FALSE, fig.align='center', out.width="90%"}
+include_graphics("img/single-hidden-MLP-Diabetes.png")
+```
+
 
 
 ```{r}
@@ -1217,19 +1236,20 @@ nn.2layer <- neuralnet(
   stepmax = 1e6
 )
 ##
-plot(nn.2layer)
+#plot(nn.2layer)
+```
+
+
+```{r echo = FALSE, fig.align='center', out.width="90%"}
+include_graphics("img/two-hidden-MLP-Diabetes.png")
 ```
 
 
 In the two model plots above, the **Error** and **Steps** values displayed at the bottom represent:
 
-* **Steps**:
+* **Steps**: The number of **training iterations** (epochs) completed during model optimization. Each step corresponds to one complete forward/backward pass and weight update cycle.
 
-The number of **training iterations** (epochs) completed during model optimization. Each step corresponds to one complete forward/backward pass and weight update cycle.
-
-* **Errors**:
-
-The **training error** reflects the loss function value (typically SSE for regression or cross-entropy for classification). The displayed **Error** represents the final error value achieved when the optimization process converges.
+* **Errors**: The **training error** reflects the loss function value (typically SSE for regression or cross-entropy for classification). The displayed **Error** represents the final error value achieved when the optimization process converges.
 
 
 Next, we write a custom function to extract the performance metrics to assess the global performance through ROC curves and the corresponding areas under the ROC curves.
